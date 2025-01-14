@@ -716,7 +716,7 @@ img {
 
         function analyzeLine(line) {
             const words = line.split(' ');
-            return words.map(analyzeWord).join('<span class="comma"> ، </span>');
+            return words.map(analyzeWord).join('<span class="comma"> </span>');
         }
 
         function analyzeWord(word) {
