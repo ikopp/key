@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروق النسب التراكمية :) الآيات الحروف الكلمات</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .graph-container {
+            width: 100%;
+            height: 400px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            padding: 25px;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e3f2fd;
+        }
+
+        th {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            font-weight: bold;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+        #myChart{
+            direction: ltr !important;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .graph-container {
+                height: 300px;
+            }
+        }
+        @media only screen and (max-width: 480px) {
+            .graph-container {
+                height: 200px;
+            }
+        }
+
+        
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+ <!--  svg home -->
+   
+ <a href="./index.html" class="home-button">
+    <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="button-text">Home</span>
+</a>
+<!-- End svg home -->
+<div class="container">
+    <h1>فروق النسب التراكمية :)  الآيات الحروف الكلمات</h1>
+    <div class="graph-container">
+        <canvas id="myChart"></canvas>
+    </div>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>سورة 1</th>
+                <th>سورة 2</th>
+                <th>الفرق التراكمي في الآيات</th>
+                <th>الفرق التراكمي في الكلمات</th>
+                <th>الفرق التراكمي في الحروف</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+</div>
+
+<script>
+ 
+          // svg home
+          const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+   
+const quranData = [
+  {
+    "surah1": "الفاتحة",
+    "surah2": "العلق",
+    "verses": 0.19,
+    "words": 0.06,
+    "letters": 0.04
+},
+{
+    "surah1": "البقرة",
+    "surah2": "القلم",
+    "verses": 3.56,
+    "words": 7.46,
+    "letters": 7.51
+},
+{
+    "surah1": "آل عمران",
+    "surah2": "المزمل",
+    "verses": 6.45,
+    "words": 11.70,
+    "letters": 11.77
+},
+{
+    "surah1": "النساء",
+    "surah2": "المدثر",
+    "verses": 8.37,
+    "words": 16.14,
+    "letters": 16.40
+},
+{
+    "surah1": "المائدة",
+    "surah2": "الفاتحة",
+    "verses": 10.18,
+    "words": 19.75,
+    "letters": 20.04
+},
+{
+    "surah1": "الأنعام",
+    "surah2": "المسد",
+    "verses": 12.75,
+    "words": 23.64,
+    "letters": 23.87
+},
+{
+    "surah1": "الأعراف",
+    "surah2": "التكوير",
+    "verses": 15.59,
+    "words": 27.81,
+    "letters": 28.10
+},
+{
+    "surah1": "الأنفال",
+    "surah2": "الأعلى",
+    "verses": 16.48,
+    "words": 29.31,
+    "letters": 29.65
+},
+{
+    "surah1": "التوبة",
+    "surah2": "الليل",
+    "verses": 18.22,
+    "words": 32.44,
+    "letters": 32.92
+},
+{
+    "surah1": "يونس",
+    "surah2": "الفجر",
+    "verses": 19.48,
+    "words": 34.63,
+    "letters": 35.04
+},
+{
+    "surah1": "هود",
+    "surah2": "الضحى",
+    "verses": 21.28,
+    "words": 37.08,
+    "letters": 37.36
+},
+{
+    "surah1": "يوسف",
+    "surah2": "الشرح",
+    "verses": 22.93,
+    "words": 39.36,
+    "letters": 39.54
+},
+{
+    "surah1": "الرعد",
+    "surah2": "العصر",
+    "verses": 23.57,
+    "words": 40.44,
+    "letters": 40.58
+},
+{
+    "surah1": "إبراهيم",
+    "surah2": "العاديات",
+    "verses": 24.23,
+    "words": 41.45,
+    "letters": 41.61
+},
+{
+    "surah1": "الحجر",
+    "surah2": "الكوثر",
+    "verses": 25.77,
+    "words": 42.29,
+    "letters": 42.46
+},
+{
+    "surah1": "النحل",
+    "surah2": "التكاثر",
+    "verses": 27.69,
+    "words": 44.62,
+    "letters": 44.79
+},
+{
+    "surah1": "الإسراء",
+    "surah2": "الماعون",
+    "verses": 29.36,
+    "words": 46.59,
+    "letters": 46.77
+},
+{
+    "surah1": "الكهف",
+    "surah2": "الكافرون",
+    "verses": 31.03,
+    "words": 48.59,
+    "letters": 48.73
+},
+{
+    "surah1": "مريم",
+    "surah2": "الفيل",
+    "verses": 32.52,
+    "words": 49.81,
+    "letters": 49.89
+},
+{
+    "surah1": "طه",
+    "surah2": "الفلق",
+    "verses": 34.61,
+    "words": 51.53,
+    "letters": 51.50
+},
+{
+    "surah1": "الأنبياء",
+    "surah2": "الناس",
+    "verses": 36.31,
+    "words": 53.01,
+    "letters": 53.01
+},
+{
+    "surah1": "الحج",
+    "surah2": "الإخلاص",
+    "verses": 37.49,
+    "words": 54.63,
+    "letters": 54.60
+},
+{
+    "surah1": "المؤمنون",
+    "surah2": "النجم",
+    "verses": 38.39,
+    "words": 55.52,
+    "letters": 55.52
+},
+{
+    "surah1": "النور",
+    "surah2": "عبس",
+    "verses": 38.74,
+    "words": 57.05,
+    "letters": 57.08
+},
+{
+    "surah1": "الفرقان",
+    "surah2": "القدر",
+    "verses": 39.90,
+    "words": 58.16,
+    "letters": 58.22
+},
+{
+    "surah1": "الشعراء",
+    "surah2": "الشمس",
+    "verses": 43.30,
+    "words": 59.79,
+    "letters": 59.86
+},
+{
+    "surah1": "النمل",
+    "surah2": "البروج",
+    "verses": 44.44,
+    "words": 61.15,
+    "letters": 61.16
+},
+{
+    "surah1": "القصص",
+    "surah2": "التين",
+    "verses": 45.72,
+    "words": 62.95,
+    "letters": 62.91
+},
+{
+    "surah1": "العنكبوت",
+    "surah2": "قريش",
+    "verses": 46.76,
+    "words": 64.20,
+    "letters": 64.19
+},
+{
+    "surah1": "الروم",
+    "surah2": "القارعة",
+    "verses": 47.55,
+    "words": 65.20,
+    "letters": 65.19
+},
+{
+    "surah1": "لقمان",
+    "surah2": "القيامة",
+    "verses": 47.45,
+    "words": 65.70,
+    "letters": 65.64
+},
+{
+    "surah1": "السجدة",
+    "surah2": "الهمزة",
+    "verses": 47.79,
+    "words": 66.13,
+    "letters": 66.07
+},
+{
+    "surah1": "الأحزاب",
+    "surah2": "المرسلات",
+    "verses": 48.16,
+    "words": 67.58,
+    "letters": 67.56
+},
+{
+    "surah1": "سبأ",
+    "surah2": "ق",
+    "verses": 48.30,
+    "words": 68.23,
+    "letters": 68.19
+},
+{
+    "surah1": "فاطر",
+    "surah2": "البلد",
+    "verses": 48.70,
+    "words": 69.13,
+    "letters": 69.07
+},
+{
+    "surah1": "يس",
+    "surah2": "الطارق",
+    "verses": 49.76,
+    "words": 70.00,
+    "letters": 69.92
+},
+{
+    "surah1": "الصافات",
+    "surah2": "القمر",
+    "verses": 51.80,
+    "words": 70.67,
+    "letters": 70.65
+},
+{
+    "surah1": "ص",
+    "surah2": "ص",
+    "verses": 51.80,
+    "words": 70.67,
+    "letters": 70.65
+},
+{
+    "surah1": "الزمر",
+    "surah2": "الأعراف",
+    "verses": 49.70,
+    "words": 67.88,
+    "letters": 67.75
+},
+{
+    "surah1": "غافر",
+    "surah2": "الجن",
+    "verses": 50.61,
+    "words": 69.09,
+    "letters": 68.96
+},
+{
+    "surah1": "فصلت",
+    "surah2": "يس",
+    "verses": 50.14,
+    "words": 69.17,
+    "letters": 69.05
+},
+{
+    "surah1": "الشورى",
+    "surah2": "الفرقان",
+    "verses": 49.76,
+    "words": 69.13,
+    "letters": 68.94
+},
+{
+    "surah1": "الزخرف",
+    "surah2": "فاطر",
+    "verses": 50.47,
+    "words": 69.20,
+    "letters": 69.05
+},
+{
+    "surah1": "الدخان",
+    "surah2": "مريم",
+    "verses": 49.84,
+    "words": 68.40,
+    "letters": 68.31
+},
+{
+    "surah1": "الجاثية",
+    "surah2": "طه",
+    "verses": 48.27,
+    "words": 67.28,
+    "letters": 67.29
+},
+{
+    "surah1": "الأحقاف",
+    "surah2": "الواقعة",
+    "verses": 47.29,
+    "words": 67.63,
+    "letters": 67.58
+},
+{
+    "surah1": "محمد",
+    "surah2": "الشعراء",
+    "verses": 44.26,
+    "words": 66.62,
+    "letters": 66.60
+},
+{
+    "surah1": "الفتح",
+    "surah2": "النمل",
+    "verses": 43.23,
+    "words": 65.85,
+    "letters": 65.91
+},
+{
+    "surah1": "الحجرات",
+    "surah2": "القصص",
+    "verses": 42.11,
+    "words": 64.45,
+    "letters": 64.58
+},
+{
+    "surah1": "ق",
+    "surah2": "الإسراء",
+    "verses": 41.05,
+    "words": 62.92,
+    "letters": 63.02
+},
+{
+    "surah1": "الذاريات",
+    "surah2": "يونس",
+    "verses": 40.27,
+    "words": 61.02,
+    "letters": 61.19
+},
+{
+    "surah1": "الطور",
+    "surah2": "هود",
+    "verses": 39.08,
+    "words": 58.92,
+    "letters": 59.23
+},
+{
+    "surah1": "النجم",
+    "surah2": "يوسف",
+    "verses": 38.29,
+    "words": 57.07,
+    "letters": 57.45
+},
+{
+    "surah1": "القمر",
+    "surah2": "الحجر",
+    "verses": 37.59,
+    "words": 56.66,
+    "letters": 57.03
+},
+{
+    "surah1": "الرحمن",
+    "surah2": "الأنعام",
+    "verses": 36.19,
+    "words": 53.19,
+    "letters": 53.67
+},
+{
+    "surah1": "الواقعة",
+    "surah2": "الصافات",
+    "verses": 34.81,
+    "words": 52.57,
+    "letters": 53.02
+},
+{
+    "surah1": "الحديد",
+    "surah2": "لقمان",
+    "verses": 34.73,
+    "words": 52.60,
+    "letters": 53.13
+},
+{
+    "surah1": "المجادلة",
+    "surah2": "سبأ",
+    "verses": 34.22,
+    "words": 52.07,
+    "letters": 52.66
+},
+{
+    "surah1": "الحشر",
+    "surah2": "الزمر",
+    "verses": 33.40,
+    "words": 51.13,
+    "letters": 51.78
+},
+{
+    "surah1": "الممتحنة",
+    "surah2": "غافر",
+    "verses": 32.25,
+    "words": 50.01,
+    "letters": 50.71
+},
+{
+    "surah1": "الصف",
+    "surah2": "فصلت",
+    "verses": 31.61,
+    "words": 49.27,
+    "letters": 49.98
+},
+{
+    "surah1": "الجمعة",
+    "surah2": "الشورى",
+    "verses": 30.93,
+    "words": 48.40,
+    "letters": 49.15
+},
+{
+    "surah1": "المنافقون",
+    "surah2": "الزخرف",
+    "verses": 29.68,
+    "words": 47.55,
+    "letters": 48.31
+},
+{
+    "surah1": "التغابن",
+    "surah2": "الدخان",
+    "verses": 29.03,
+    "words": 47.42,
+    "letters": 48.19
+},
+{
+    "surah1": "الطلاق",
+    "surah2": "الجاثية",
+    "verses": 28.62,
+    "words": 47.15,
+    "letters": 47.93
+},
+{
+    "surah1": "التحريم",
+    "surah2": "الأحقاف",
+    "verses": 28.26,
+    "words": 46.65,
+    "letters": 47.45
+},
+{
+    "surah1": "الملك",
+    "surah2": "الذاريات",
+    "verses": 27.77,
+    "words": 46.62,
+    "letters": 47.39
+},
+{
+    "surah1": "القلم",
+    "surah2": "الغاشية",
+    "verses": 28.19,
+    "words": 46.88,
+    "letters": 47.67
+},
+{
+    "surah1": "الحاقة",
+    "surah2": "الكهف",
+    "verses": 27.26,
+    "words": 45.19,
+    "letters": 46.02
+},
+{
+    "surah1": "المعارج",
+    "surah2": "النحل",
+    "verses": 25.91,
+    "words": 43.09,
+    "letters": 43.94
+},
+{
+    "surah1": "نوح",
+    "surah2": "نوح",
+    "verses": 25.91,
+    "words": 43.09,
+    "letters": 43.94
+},
+{
+    "surah1": "الجن",
+    "surah2": "إبراهيم",
+    "verses": 25.53,
+    "words": 42.39,
+    "letters": 43.21
+},
+{
+    "surah1": "المزمل",
+    "surah2": "الأنبياء",
+    "verses": 24.05,
+    "words": 41.14,
+    "letters": 41.94
+},
+{
+    "surah1": "المدثر",
+    "surah2": "المؤمنون",
+    "verses": 23.06,
+    "words": 40.12,
+    "letters": 40.91
+},
+{
+    "surah1": "القيامة",
+    "surah2": "السجدة",
+    "verses": 23.22,
+    "words": 39.85,
+    "letters": 40.64
+},
+{
+    "surah1": "الإنسان",
+    "surah2": "الطور",
+    "verses": 22.93,
+    "words": 39.76,
+    "letters": 40.57
+},
+{
+    "surah1": "المرسلات",
+    "surah2": "الملك",
+    "verses": 23.25,
+    "words": 39.56,
+    "letters": 40.41
+},
+{
+    "surah1": "النبأ",
+    "surah2": "الحاقة",
+    "verses": 23.06,
+    "words": 39.45,
+    "letters": 40.31
+},
+{
+    "surah1": "النازعات",
+    "surah2": "المعارج",
+    "verses": 23.09,
+    "words": 39.40,
+    "letters": 40.25
+},
+{
+    "surah1": "عبس",
+    "surah2": "النبأ",
+    "verses": 23.12,
+    "words": 39.35,
+    "letters": 40.18
+},
+{
+    "surah1": "التكوير",
+    "surah2": "النازعات",
+    "verses": 22.85,
+    "words": 39.25,
+    "letters": 40.08
+},
+{
+    "surah1": "الانفطار",
+    "surah2": "الانفطار",
+    "verses": 22.85,
+    "words": 39.25,
+    "letters": 40.08
+},
+{
+    "surah1": "المطففين",
+    "surah2": "الإنشقاق",
+    "verses": 23.03,
+    "words": 39.33,
+    "letters": 40.17
+},
+{
+    "surah1": "الإنشقاق",
+    "surah2": "الروم",
+    "verses": 22.47,
+    "words": 38.41,
+    "letters": 39.25
+},
+{
+    "surah1": "البروج",
+    "surah2": "العنكبوت",
+    "verses": 21.71,
+    "words": 37.29,
+    "letters": 38.10
+},
+{
+    "surah1": "الطارق",
+    "surah2": "المطففين",
+    "verses": 21.41,
+    "words": 37.15,
+    "letters": 37.94
+},
+{
+    "surah1": "الأعلى",
+    "surah2": "البقرة",
+    "verses": 17.13,
+    "words": 29.35,
+    "letters": 30.09
+},
+{
+    "surah1": "الغاشية",
+    "surah2": "الأنفال",
+    "verses": 16.34,
+    "words": 27.87,
+    "letters": 28.57
+},
+{
+    "surah1": "الفجر",
+    "surah2": "آل عمران",
+    "verses": 13.61,
+    "words": 23.54,
+    "letters": 24.22
+},
+{
+    "surah1": "البلد",
+    "surah2": "الأحزاب",
+    "verses": 12.76,
+    "words": 21.97,
+    "letters": 22.58
+},
+{
+    "surah1": "الشمس",
+    "surah2": "الممتحنة",
+    "verses": 12.80,
+    "words": 21.59,
+    "letters": 22.19
+},
+{
+    "surah1": "الليل",
+    "surah2": "النساء",
+    "verses": 10.31,
+    "words": 16.91,
+    "letters": 17.34
+},
+{
+    "surah1": "الضحى",
+    "surah2": "الزلزلة",
+    "verses": 10.36,
+    "words": 16.92,
+    "letters": 17.35
+},
+{
+    "surah1": "الشرح",
+    "surah2": "الحديد",
+    "verses": 10.02,
+    "words": 16.21,
+    "letters": 16.61
+},
+{
+    "surah1": "التين",
+    "surah2": "محمد",
+    "verses": 9.54,
+    "words": 15.56,
+    "letters": 15.93
+},
+{
+    "surah1": "العلق",
+    "surah2": "الرعد",
+    "verses": 9.16,
+    "words": 14.55,
+    "letters": 14.95
+},
+{
+    "surah1": "القدر",
+    "surah2": "الرحمن",
+    "verses": 7.99,
+    "words": 14.14,
+    "letters": 14.49
+},
+{
+    "surah1": "البينة",
+    "surah2": "الإنسان",
+    "verses": 7.62,
+    "words": 13.95,
+    "letters": 14.28
+},
+{
+    "surah1": "الزلزلة",
+    "surah2": "الطلاق",
+    "verses": 7.55,
+    "words": 13.64,
+    "letters": 13.97
+},
+{
+    "surah1": "العاديات",
+    "surah2": "البينة",
+    "verses": 7.60,
+    "words": 13.57,
+    "letters": 13.90
+},
+{
+    "surah1": "القارعة",
+    "surah2": "الحشر",
+    "verses": 7.39,
+    "words": 13.04,
+    "letters": 13.35
+},
+{
+    "surah1": "التكاثر",
+    "surah2": "النور",
+    "verses": 6.49,
+    "words": 11.38,
+    "letters": 11.65
+},
+{
+    "surah1": "العصر",
+    "surah2": "الحج",
+    "verses": 5.29,
+    "words": 9.75,
+    "letters": 10.07
+},
+{
+    "surah1": "الهمزة",
+    "surah2": "المنافقون",
+    "verses": 5.26,
+    "words": 9.57,
+    "letters": 9.87
+},
+{
+    "surah1": "الفيل",
+    "surah2": "المجادلة",
+    "verses": 4.99,
+    "words": 8.98,
+    "letters": 9.28
+},
+{
+    "surah1": "قريش",
+    "surah2": "الحجرات",
+    "verses": 4.76,
+    "words": 8.55,
+    "letters": 8.84
+},
+{
+    "surah1": "الماعون",
+    "surah2": "التحريم",
+    "verses": 4.68,
+    "words": 8.26,
+    "letters": 8.54
+},
+{
+    "surah1": "الكوثر",
+    "surah2": "التغابن",
+    "verses": 4.44,
+    "words": 7.96,
+    "letters": 8.22
+},
+{
+    "surah1": "الكافرون",
+    "surah2": "الصف",
+    "verses": 4.31,
+    "words": 7.70,
+    "letters": 7.96
+},
+{
+    "surah1": "النصر",
+    "surah2": "الجمعة",
+    "verses": 4.19,
+    "words": 7.50,
+    "letters": 7.76
+},
+{
+    "surah1": "المسد",
+    "surah2": "الفتح",
+    "verses": 3.80,
+    "words": 6.82,
+    "letters": 7.02
+},
+{
+    "surah1": "الإخلاص",
+    "surah2": "المائدة",
+    "verses": 1.94,
+    "words": 3.19,
+    "letters": 3.35
+},
+{
+    "surah1": "الفلق",
+    "surah2": "التوبة",
+    "verses": -0.05,
+    "words": 0.00,
+    "letters": 0.00
+},
+{
+    "surah1": "الناس",
+    "surah2": "النصر",
+    "verses": 0.00,
+    "words": 0.00,
+    "letters": 0.00
+}
+];
+    // Extraer los datos para las etiquetas y los conjuntos de datos
+    const labels = quranData.map(item => `${item.surah1} - ${item.surah2}`);
+    const versesData = quranData.map(item => item.verses * 1); // Convertir a porcentaje
+    const wordsData = quranData.map(item => item.words * 1); // Convertir a porcentaje
+    const lettersData = quranData.map(item => item.letters * 1); // Convertir a porcentaje
+
+    // Configuración del gráfico
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'الفرق في الآيات',
+                data: versesData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'الفرق في الكلمات',
+                data: wordsData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'الفرق في الحروف',
+                data: lettersData,
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Rellenar la tabla con los datos
+    const tableBody = document.getElementById('table-body');
+    quranData.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.surah1}</td>
+            <td>${item.surah2}</td>
+            <td>${item.verses}</td>
+            <td>${item.words}</td>
+            <td>${item.letters}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+</script>
+
+</body>
+</html>

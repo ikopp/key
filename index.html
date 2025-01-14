@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفتاح المستقبل & فرقان الهدى</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* إعدادات عامة */
+        * {
+            text-align: center !important;
+            text-justify: center !important;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Traditional Arabic', Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: linear-gradient(135deg, #1a1f3c, #2a284f);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 1.5s ease;
+        }
+
+        /* أنيميشن الدخول */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* شريط تغيير اللغات */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+        }
+
+        .lang-btn i {
+            font-size: 1.2rem;
+        }
+
+        .lang-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            border-color: #007bff;
+        }
+
+        .lang-btn.active {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+        /* تصميم الحاويات المغلقة */
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .box h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .box-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            padding-top: 10px;
+        }
+
+        .box.active .box-content {
+            max-height: 500px; /* ارتفاع كافٍ لعرض المحتوى */
+        }
+
+        .box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .box ul a {
+            text-decoration: none;
+            color: #00d4ff;
+            font-size: 1rem;
+            display: block;
+            margin: 5px 0;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .box ul a:hover {
+            color: #fff;
+            transform: translateX(10px);
+        }
+
+        /* زر النسبية */
+        .furqan-link {
+            text-decoration: none !important;
+            color: #00d4ff;
+            font-size: 1.2rem;
+            display: inline-block;
+            padding: 10px 15px;
+            border: 1px solid #00d4ff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .furqan-link:hover {
+            background-color: #00d4ff;
+            color: #1a1f3c;
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .footer .copyright {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .footer .social-media a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .footer .social-media a.youtube {
+            color: #FF0000; /* لون اليوتيوب */
+        }
+
+        .footer .social-media a.skype {
+            color: #00aff0; /* لون سكايب */
+        }
+
+        .footer .social-media a.discord {
+            color: #7289da; /* لون ديسكورد */
+        }
+
+        .footer .social-media a:hover {
+            transform: scale(1.2);
+            color: #fff;
+        }
+
+        /* التجاوب مع الأجهزة المختلفة */
+        @media (max-width: 768px) {
+            .lang-switcher {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .lang-btn {
+                width: 80%;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .box {
+                padding: 10px;
+            }
+
+            .box h2 {
+                font-size: 1.2rem;
+            }
+
+            .box ul a {
+                font-size: 0.9rem;
+            }
+
+            .footer .copyright {
+                font-size: 0.8rem;
+            }
+
+            .footer .social-media a {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- قائمة اللغات -->
+    <div class="lang-switcher">
+        <span data-translate="title">مفتاح المستقبل فرقان الهدى</span>
+        <button class="lang-btn active" data-lang="ar"><i class="fas fa-moon"></i> العربية</button>
+        <button class="lang-btn" data-lang="en"><i class="fas fa-globe"></i> English</button>
+        <button class="lang-btn" data-lang="fr"><i class="fas fa-tower"></i> Français</button>
+        <button class="lang-btn" data-lang="es"><i class="fas fa-sun"></i> Español</button>
+        <button class="lang-btn" data-lang="it"><i class="fas fa-pizza-slice"></i> Italia</button>
+    </div>
+
+    <!-- الحاويات -->
+    <div class="container">
+        <!-- النسبية -->
+        <div class="box">
+            <h2 data-translate="relative">النسبية</h2>
+            <div class="box-content">
+                <a href="./nesbia.html" class="furqan-link" data-translate="relative">النسبية</a>
+            </div>
+        </div>
+
+        <!-- مواقع الفرقان -->
+        <div class="box">
+            <h2 data-translate="furqan">مواقع الفرقان</h2>
+            <div class="box-content">
+                <ul>
+                    <a href="./furquanelhoda1.html" data-translate="furqan_links[0]">فرقان الهدى - (1)</a>
+                    <a href="./furquanelhoda2.html" data-translate="furqan_links[1]">فرقان الهدى - (2)</a>
+                    <a href="./furquanelhoda3.html" data-translate="furqan_links[2]">فرقان الهدى - (3)</a>
+                    <a href="./furquanelhoda4.html" data-translate="furqan_links[3]">فرقان الهدى - (4)</a>
+                    <a href="./furquanelhoda5.html" data-translate="furqan_links[4]">فرقان الهدى - (5)</a>
+                    <a href="./furquanelhoda6.html" data-translate="furqan_links[5]">فرقان الهدى - (6)</a>
+                    <a href="./letres14.html" data-translate="furqan_links[6]">فرقان الشامل -14 * 1 </a>
+                    <a href="./letres14_vip.html" data-translate="furqan_links[7]">فرقان عليون - 14*قوتها</a>
+                </ul>
+            </div>
+        </div>
+
+        <!-- الجداول -->
+        <div class="box">
+            <h2 data-translate="tables">الجداول</h2>
+            <div class="box-content">
+                <ul>
+                    <a href="./tasnimsaid1.html" data-translate="tables_links[0]">فروق الآيات الحروف الكلمات</a>
+                    <a href="./tasnimsaid4.html" data-translate="tables_links[1]">فروق النسب التراكمية</a>
+                    <a href="./tasnimsaid2.html" data-translate="tables_links[2]">جدول الفهرس التراكمي</a>
+                    <a href="./tasnimsaid3.html" data-translate="tables_links[3]">جدول التنزيل التراكمي</a>
+                    <a href="./tasnimsaid5.html" data-translate="tables_links[4]">  فروق العدد والنسب الآيات الحروف الكلمات</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun_g1/" data-translate="tables_links[5]">النسب القرآنية (عليون) مجموعة _ 1</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun_g2/" data-translate="tables_links[6]">النسب القرآنية (عليون) مجموعة _ 2</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun_g3/" data-translate="tables_links[7]">النسب القرآنية (عليون) مجموعة _ 3</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun_g4/" data-translate="tables_links[8]">النسب القرآنية (عليون) مجموعة _ 4</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun_g5/" data-translate="tables_links[9]">النسب القرآنية (عليون) مجموعة _ 5</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_jami3/" data-translate="tables_links[10]">النسب القرآنية_ الشامل</a>
+                    <a href="https://furquanelhoda.github.io/nesbia_alioun/" data-translate="tables_links[11]">النسب القرآنية_عليون</a>
+                </ul>
+            </div>
+        </div>
+
+        <!-- برامج التشفير -->
+        <div class="box">
+            <h2 data-translate="tachfir">برامج حساب التشفير</h2>
+            <div class="box-content">
+                <ul>
+                    <a href="./tachfircoran.html" data-translate="tachfir_links[0]">تشفير القرآن</a>
+                    <a href="./fatiha.html" data-translate="tachfir_links[1]">قاعدة الفاتحة</a>
+                    <a href="./nour-14.html" data-translate="tachfir_links[2]">قاعدة الحروف النورانية</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <div class="footer">
+        <div data-translate="footer" class="copyright">
+            &copy; <span class="year"><script>document.write(new Date().getFullYear())</script></span> مفتاح المستقبل فرقان الهدى. جميع الحقوق محفوظة
+        </div>
+        <div class="social-media">
+            <a href="https://www.youtube.com/@Zakkar-YAH" class="youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="skype:Zakaria Coranist?+33628063053" class="skype" target="_blank"><i class="fab fa-skype"></i></a>
+            <a href="https://discord.gg/67nezRDK" class="discord" target="_blank"><i class="fab fa-discord"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // فتح وإغلاق الحاويات
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', () => {
+                box.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="app1.js"></script>
+</body>
+</html>

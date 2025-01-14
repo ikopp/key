@@ -1,0 +1,194 @@
+{
+    "languages": {
+        "ar": {
+            "title": "مفتاح المستقبل فرقان الهدى",
+            "relative": "النسبية",
+            "furqan": "مواقع الفرقان",
+            "tables": "الجداول",
+            "tachfir": "برامج حساب التشفير",
+            "footer": "مفتاح المستقبل فرقان الهدى. جميع الحقوق محفوظة",
+
+            "furqan_links": [
+                "فرقان الهدى - (1)",
+                "فرقان الهدى - (2)",
+                "فرقان الهدى - (3)",
+                "فرقان الهدى - (4)",
+                "فرقان الهدى - (5)",
+                "فرقان الهدى - (6)",
+                "فرقان الشامل  -14 * 1",
+                "فرقان عليون - 14*قوتها"
+            ],
+            "tables_links": [
+                "فروق الآيات الحروف الكلمات",
+                "فروق النسب التراكمية: الآيات الحروف الكلمات",
+                "جدول الفهرس التراكمي للقرآن الكريم",
+                "جدول التنزيل التراكمي للقرآن الكريم",
+                "فروق العدد والنسب الآيات الحروف الكلمات",
+                "النسب القرآنية (عليون) مجموعة _ 1",
+"النسب القرآنية (عليون) مجموعة _ 2",
+"النسب القرآنية (عليون) مجموعة _ 3",
+"النسب القرآنية (عليون) مجموعة _ 4",
+"النسب القرآنية (عليون) مجموعة _ 5",
+"النسب القرآنية_ الشامل",
+"النسب القرآنية_عليون "
+            ],
+            "tachfir_links": [
+                "تشفير القرآن",
+                "قاعدة الفاتحة",
+                "قاعدة الحروف النورانية"
+            ]
+        },
+        "it": {
+            "title": "La chiave del futuro Furqan al-Huda",
+            "relative": "Relativo",
+            "furqan": "Siti del Furqan",
+            "tables": "Tabelle",
+            "tachfir": "Programmi di calcolo della crittografia",
+            "footer": "La chiave del futuro Furqan al-Huda. Tutti i diritti riservati",
+    
+            "furqan_links": [
+                "Furqan al-Huda - (1)",
+                "Furqan al-Huda - (2)",
+                "Furqan al-Huda - (3)",
+                "Furqan al-Huda - (4)",
+                "Furqan al-Huda - (5)",
+                "Furqan al-Huda - (6)",
+                "Furqan completo - 14 * 1",
+                "Furqan Alion - 14 * potenza"
+            ],
+            "tables_links": [
+                "Differenze tra versetti lettere parole",
+                "Differenze tra rapporti cumulativi: versetti lettere parole",
+                "Tabella dell'indice cumulativo del Corano",
+                "Tabella del download cumulativo del Corano",
+                "Differenze tra numero e rapporti versetti lettere parole",
+                "Le genealogie coraniche (Illiyun) Raccolta _ 1",
+"Le genealogie coraniche (Illiyun) Raccolta _ 2",
+"Le genealogie coraniche (Illiyun) Raccolta _ 3",
+"Le genealogie coraniche (Illiyun) Raccolta _ 4",
+"Le genealogie coraniche (Illiyun) Raccolta _ 5",
+"Le genealogie coraniche_ Completo",
+"Le genealogie coraniche _ 'Illiyun"
+            ],
+            "tachfir_links": [
+                "Crittografia del Corano",
+                "Regola della Fatiha",
+                "Regola delle lettere luminose"
+            ]
+        },
+        "fr": {
+            "title": "La clé de l’avenir est Furqan Al-Huda",
+            "relative": "La relativité",
+            "furqan": "Sites du Furqan",
+            "tables": "Tableaux",
+            "tachfir": "Programmes de calcul de chiffrement",
+            "footer": "La clé de l’avenir est Furqan Al-Huda. Tous droits réservés",
+
+            "furqan_links": [
+                "Furqan al-Huda - (1)",
+                "Furqan al-Huda - (2)",
+                "Furqan al-Huda - (3)",
+                "Furqan al-Huda - (4)",
+                "Furqan al-Huda - (5)",
+                "Furqan al-Huda - (6)",
+                "Furqan Al Shamil - 14 * 1",
+                "Furqan Alayyoun - 14*Sa force"
+            ],
+            "tables_links": [
+                "Différences des versets, lettres, mots",
+                "Différences des ratios cumulés: versets, lettres, mots",
+                "Tableau de l'index cumulatif du Coran",
+                "Tableau de la révélation cumulative du Coran",
+                "Différences des nombres et ratios versets, lettres, mots",
+                "Les généalogies coraniques (Illiyun) Collection _ 1",
+"Les généalogies coraniques (Illiyun) Collection _ 2",
+"Les généalogies coraniques (Illiyun) Collection _ 3",
+"Les généalogies coraniques (Illiyun) Collection _ 4",
+"Les généalogies coraniques (Illiyun) Collection _ 5",
+"Les généalogies coraniques_ Complet",
+"Les généalogies coraniques_ 'Illiyun"
+
+            ],
+            "tachfir_links": [
+                "Chiffrement du Coran",
+                "Règle de la Fatiha",
+                "Règle des lettres lumineuses"
+            ]
+        },
+        "es": {
+            "title": "La clave del futuro es Furqan Al-Huda",
+            "relative": "La relatividad",
+            "furqan": "Sitios del Furqan",
+            "tables": "Tablas",
+            "tachfir": "Programas de cálculo de cifrado",
+            "footer": "La clave del futuro es Furqan Al-Huda. Reservados todos los derechos",
+            "furqan_links": [
+                "Furqan al-Huda - (1)",
+                "Furqan al-Huda - (2)",
+                "Furqan al-Huda - (3)",
+                "Furqan al-Huda - (4)",
+                "Furqan al-Huda - (5)",
+                "Furqan al-Huda - (6)",
+                "Furqan Al Shamil - 14 * 1",
+                "Furqan Alayyoun - 14*Su fuerza"
+            ],
+            "tables_links": [
+                "Diferencias de versos, letras, palabras",
+                "Diferencias de ratios acumulativos: versos, letras, palabras",
+                "Tabla del índice acumulativo del Corán",
+                "Tabla de la revelación acumulativa del Corán",
+                "Diferencias de números y ratios versos, letras, palabras",
+                "Las genealogías coránicas (Illiyun) Colección _ 1",
+"Las genealogías coránicas (Illiyun) Colección _ 2",
+"Las genealogías coránicas (Illiyun) Colección _ 3",
+"Las genealogías coránicas (Illiyun) Colección _ 4",
+"Las genealogías coránicas (Illiyun) Colección _ 5",
+"Las genealogías coránicas_ Completo",
+"Las genealogías coránicas_ 'Illiyun"
+            ],
+            "tachfir_links": [
+                "Cifrado del Corán",
+                "Regla de la Fatiha",
+                "Regla de las letras luminosas"
+            ]
+        },
+        "en": {
+            "title": "The key to the future is Furqan Al-Huda",
+            "relative": "Relativity",
+            "furqan": "Furqan Sites",
+            "tables": "Tables",
+            "tachfir": "Encryption Calculation Programs",
+            "footer": "The key to the future is Furqan Al-Huda. All rights reserved",
+            "furqan_links": [
+                "Furqan al-Huda - (1)",
+                "Furqan al-Huda - (2)",
+                "Furqan al-Huda - (3)",
+                "Furqan al-Huda - (4)",
+                "Furqan al-Huda - (5)",
+                "Furqan al-Huda - (6)",
+                "Furqan Al Shamil - 14 * 1",
+                "Furqan Alayyoun - 14*Her Strength"
+            ],
+            "tables_links": [
+                "Differences of verses, letters, words",
+                "Differences of cumulative ratios: verses, letters, words",
+                "Cumulative index table of the Quran",
+                "Cumulative revelation table of the Quran",
+                "Differences of numbers and ratios verses, letters, words",
+                "Quranic Genealogies (Illiyun) Collection _ 1",
+"Quranic Genealogies (Illiyun) Collection _ 2",
+"Quranic Genealogies (Illiyun) Collection _ 3",
+"Quranic Genealogies (Illiyun) Collection _ 4",
+"Quranic Genealogies (Illiyun) Collection _ 5",
+"Quranic Genealogies_ Comprehensive",
+"Quranic Genealogies_ 'Illiyun"
+            ],
+            "tachfir_links": [
+                "Quran Encryption",
+                "Fatiha Rule",
+                "Rule of the luminous letters"
+            ]
+        }
+    }
+
+}

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروق الآيات الحروف الكلمات</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .graph-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #3498db;
+            color: #ffffff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+            transition: background-color 0.3s ease;
+        }
+        .percentage {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .percentage-bar {
+            position: absolute;
+            height: 100%;
+            background-color: #2ecc71;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+        .percentage-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #2d3748;
+            font-weight: bold;
+            line-height: 20px;
+        }
+
+        
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+     <!--  svg home -->
+   
+     <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+    <div class="container">
+        <h1>فروق الآيات الحروف الكلمات</h1>
+        <div class="graph-container">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>السورة الأولى</th>
+                        <th>السورة الثانية</th>
+                        <th>الآيات</th>
+                        <th>الكلمات</th>
+                        <th>الحروف</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- الصفوف ستضاف هنا بواسطة JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        
+          // svg home
+          const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+    // بيانات القرآن
+    const quranData = [
+     
+{ surah1: "الفاتحة", surah2: "العلق", verses: 0.04, words: 0.06, letters: 0.19 },
+    { surah1: "البقرة", surah2: "القلم", verses: 0.15, words: 0.18, letters: 0.22 },
+    { surah1: "آل عمران", surah2: "المزمل", verses: 0.11, words: 0.13, letters: 0.17 },
+    { surah1: "النساء", surah2: "المدثر", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "المائدة", surah2: "الفاتحة", verses: 0.06, words: 0.08, letters: 0.12 },
+    { surah1: "الأنعام", surah2: "المسد", verses: 0.03, words: 0.04, letters: 0.09 },
+    { surah1: "الأعراف", surah2: "التكوير", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الأنفال", surah2: "الأعلى", verses: 0.05, words: 0.07, letters: 0.11 },
+    { surah1: "التوبة", surah2: "الليل", verses: 0.04, words: 0.06, letters: 0.10 },
+    { surah1: "يونس", surah2: "الفجر", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "هود", surah2: "الضحى", verses: 0.03, words: 0.05, letters: 0.08 },
+    { surah1: "يوسف", surah2: "الشرح", verses: 0.05, words: 0.07, letters: 0.12 },
+    { surah1: "الرعد", surah2: "العصر", verses: 0.02, words: 0.04, letters: 0.07 },
+    { surah1: "إبراهيم", surah2: "العاديات", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "الحجر", surah2: "الكوثر", verses: 0.02, words: 0.03, letters: 0.06 },
+    { surah1: "النحل", surah2: "التكاثر", verses: 0.04, words: 0.06, letters: 0.11 },
+    { surah1: "الإسراء", surah2: "الماعون", verses: 0.03, words: 0.05, letters: 0.09 },
+    { surah1: "الكهف", surah2: "الكافرون", verses: 0.04, words: 0.06, letters: 0.10 },
+    { surah1: "مريم", surah2: "الفيل", verses: 0.03, words: 0.04, letters: 0.08 },
+    { surah1: "طه", surah2: "الفلق", verses: 0.02, words: 0.03, letters: 0.07 },
+    { surah1: "الأنبياء", surah2: "الناس", verses: 0.03, words: 0.04, letters: 0.08 },
+    { surah1: "الحج", surah2: "الإخلاص", verses: 0.02, words: 0.03, letters: 0.06 },
+    { surah1: "المؤمنون", surah2: "النجم", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "النور", surah2: "عبس", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الفرقان", surah2: "القدر", verses: 0.03, words: 0.05, letters: 0.09 },
+    { surah1: "الشعراء", surah2: "الشمس", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "النمل", surah2: "البروج", verses: 0.05, words: 0.07, letters: 0.12 },
+    { surah1: "القصص", surah2: "التين", verses: 0.03, words: 0.04, letters: 0.08 },
+    { surah1: "العنكبوت", surah2: "قريش", verses: 0.02, words: 0.03, letters: 0.07 },
+    { surah1: "الروم", surah2: "القارعة", verses: 0.04, words: 0.06, letters: 0.10 },
+    { surah1: "لقمان", surah2: "القيامة", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "السجدة", surah2: "الهمزة", verses: 0.03, words: 0.04, letters: 0.08 },
+    { surah1: "الأحزاب", surah2: "المرسلات", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "سبأ", surah2: "ق", verses: 0.05, words: 0.07, letters: 0.11 },
+    { surah1: "فاطر", surah2: "البلد", verses: 0.04, words: 0.06, letters: 0.10 },
+    { surah1: "يس", surah2: "الطارق", verses: 0.05, words: 0.07, letters: 0.12 },
+    { surah1: "الصافات", surah2: "القمر", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "ص", surah2: "ص", verses: 1.00, words: 1.00, letters: 1.00 },
+    { surah1: "الزمر", surah2: "الأعراف", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "غافر", surah2: "الجن", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "فصلت", surah2: "يس", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الشورى", surah2: "الفرقان", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الزخرف", surah2: "فاطر", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الدخان", surah2: "مريم", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "الجاثية", surah2: "طه", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "الأحقاف", surah2: "الواقعة", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "محمد", surah2: "الشعراء", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "الفتح", surah2: "النمل", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "الحجرات", surah2: "القصص", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "ق", surah2: "الإسراء", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "الذاريات", surah2: "يونس", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الطور", surah2: "هود", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "النجم", surah2: "يوسف", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "القمر", surah2: "الحجر", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الرحمن", surah2: "الأنعام", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "الواقعة", surah2: "الصافات", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "الحديد", surah2: "لقمان", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "المجادلة", surah2: "سبأ", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الحشر", surah2: "الزمر", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الممتحنة", surah2: "غافر", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "الصف", surah2: "فصلت", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "الجمعة", surah2: "الشورى", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "المنافقون", surah2: "الزخرف", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "التغابن", surah2: "الدخان", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الطلاق", surah2: "الجاثية", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "التحريم", surah2: "الأحقاف", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الملك", surah2: "الذاريات", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "القلم", surah2: "الغاشية", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "الحاقة", surah2: "الكهف", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "المعارج", surah2: "النحل", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "نوح", surah2: "نوح", verses: 1.00, words: 1.00, letters: 1.00 },
+    { surah1: "الجن", surah2: "إبراهيم", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "المزمل", surah2: "الأنبياء", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "المدثر", surah2: "المؤمنون", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "القيامة", surah2: "السجدة", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الإنسان", surah2: "الطور", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "المرسلات", surah2: "الملك", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "النبأ", surah2: "الحاقة", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "النازعات", surah2: "المعارج", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "عبس", surah2: "النبأ", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "التكوير", surah2: "النازعات", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "الانفطار", surah2: "الانفطار", verses: 1.00, words: 1.00, letters: 1.00 },
+    { surah1: "المطففين", surah2: "الإنشقاق", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الإنشقاق", surah2: "الروم", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "البروج", surah2: "العنكبوت", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "الطارق", surah2: "المطففين", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "الأعلى", surah2: "البقرة", verses: 0.15, words: 0.17, letters: 0.22 },
+    { surah1: "الغاشية", surah2: "الأنفال", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الفجر", surah2: "آل عمران", verses: 0.14, words: 0.16, letters: 0.21 },
+    { surah1: "البلد", surah2: "الأحزاب", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "الشمس", surah2: "الممتحنة", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الليل", surah2: "النساء", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "الضحى", surah2: "الزلزلة", verses: 0.04, words: 0.06, letters: 0.11 },
+    { surah1: "الشرح", surah2: "الحديد", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "التين", surah2: "محمد", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "العلق", surah2: "الرعد", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "القدر", surah2: "الرحمن", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "البينة", surah2: "الإنسان", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الزلزلة", surah2: "الطلاق", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "العاديات", surah2: "البينة", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "القارعة", surah2: "الحشر", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "التكاثر", surah2: "النور", verses: 0.10, words: 0.12, letters: 0.17 },
+    { surah1: "العصر", surah2: "الحج", verses: 0.11, words: 0.13, letters: 0.18 },
+    { surah1: "الهمزة", surah2: "المنافقون", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الفيل", surah2: "المجادلة", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "قريش", surah2: "الحجرات", verses: 0.09, words: 0.11, letters: 0.16 },
+    { surah1: "الماعون", surah2: "التحريم", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الكوثر", surah2: "التغابن", verses: 0.07, words: 0.09, letters: 0.14 },
+    { surah1: "الكافرون", surah2: "الصف", verses: 0.06, words: 0.08, letters: 0.13 },
+    { surah1: "النصر", surah2: "الجمعة", verses: 0.05, words: 0.07, letters: 0.12 },
+    { surah1: "المسد", surah2: "الفتح", verses: 0.08, words: 0.10, letters: 0.15 },
+    { surah1: "الإخلاص", surah2: "المائدة", verses: 0.12, words: 0.14, letters: 0.19 },
+    { surah1: "الفلق", surah2: "التوبة", verses: 0.13, words: 0.15, letters: 0.20 },
+    { surah1: "الناس", surah2: "النصر", verses: 0.04, words: 0.06, letters: 0.11 }
+
+    ];
+    
+
+    // استخراج البيانات للتسميات ومجموعات البيانات
+    const labels = quranData.map(item => `${item.surah1} - ${item.surah2}`);
+    const versesData = quranData.map(item => item.verses);
+    const wordsData = quranData.map(item => item.words);
+    const lettersData = quranData.map(item => item.letters);
+
+    // إعداد الرسم البياني
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'الفرق في الآيات',
+                data: versesData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'الفرق في الكلمات',
+                data: wordsData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'الفرق في الحروف',
+                data: lettersData,
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'النسبة المئوية للفرق'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'مقارنة السور'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += (context.parsed.y ).toFixed(2) + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // ملء الجدول
+    const tableBody = document.getElementById('tableBody');
+    quranData.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.surah1}</td>
+            <td>${item.surah2}</td>
+            <td>
+                <div class="percentage">
+                    <div class="percentage-bar" style="width: ${item.verses }%"></div>
+                    <div class="percentage-text">${(item.verses ).toFixed(2)}%</div>
+                </div>
+            </td>
+            <td>
+                <div class="percentage">
+                    <div class="percentage-bar" style="width: ${item.words }%"></div>
+                    <div class="percentage-text">${(item.words ).toFixed(2)}%</div>
+                </div>
+            </td>
+            <td>
+                <div class="percentage">
+                    <div class="percentage-bar" style="width: ${item.letters }%"></div>
+                    <div class="percentage-text">${(item.letters ).toFixed(2)}%</div>
+                </div>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    </script>
+</body>
+</html>

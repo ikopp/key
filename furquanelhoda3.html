@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرقان الهدى : 3 </title>
+    <style>
+        body {
+            margin: 0;
+           
+            background-color: black;
+            color: #000000;
+            font-family: Arial, sans-serif;
+        }
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+       
+     
+      
+        /* after matrix css */
+        #inputText {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.705);
+            color: #e6f7ff;
+        }
+                #arabicInput {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.705);
+            color: #e6f7ff;
+        }
+        
+        #output {
+ 
+  padding: 10px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+    font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word; /* Optional for older browsers */
+}
+
+
+
+        .input-line, .output-line, .counters {
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+        .input-line {
+            background-color: #e6f7ff;
+        }
+        .output-line {
+            background-color: #f0fff0;
+        }
+        .counters {
+            /* background-color: #fff0e6; */
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+        .highlight {
+            position: relative;
+            color: red;
+            font-weight: bold;
+        }
+        .number {
+            position: absolute;
+            top: -0.7em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.5em;
+            font-weight: normal;
+            color: blue;
+        }
+        .large-number {
+            font-size: 0.35em;
+            color: violet;
+        }
+        .comma {
+            color: gold;
+            font-weight: bold;
+        }
+        button {
+            padding: 5px;
+            background-color: rgb(3, 197, 13);;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid bisque;
+        }
+        button:hover {
+            background-color: #e6f0e7;
+            color: rgb(3, 197, 13);
+            border: 1px solid rgb(17, 10, 1);
+
+        }
+        /* css table */
+        table{
+    width: 100%;
+    direction: rtl;
+    text-align: center;
+    font-weight: bold;
+}
+
+.pl{
+    background: #eb0e0e;
+    color: black;
+}
+thead{
+    background: black;
+    color: aliceblue;
+}
+tbody{
+    background: rgb(3, 197, 13);
+    color: rgb(7, 9, 10);
+}
+/* css table1 */
+
+#table1{
+        width: 30%;
+        font-weight: bold;
+       direction: ltr;
+     
+    
+    }
+
+    .fred{
+        background-color: aqua;
+        color: black;
+    }
+    .one{
+        background: #f1c40f;
+        color: rgba(0, 0, 0, 0.699);
+        margin: 2px;
+
+    }
+    .two{
+        background: rgb(9, 250, 102);
+        color: rgb(2, 7, 10);
+    }
+    .span1{
+            background-color:#f1c40f;
+            padding: 5px;
+            font-size: x-large;
+        }
+        .span2{
+            background-color: rgb(223, 15, 32);
+            padding: 5px;
+            font-size: x-large;
+            justify-content: center;
+        }
+        .centre{
+            justify-content: center;
+            text-align: center;
+            
+        }
+        /* متجاوب مع جميع الأنظمة */
+        @media screen and (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .content {
+        padding: 10px;
+    }
+    
+    #inputText {
+        height: 80px;
+    }
+    
+    .counters {
+        width: 100%;
+    }
+    
+    #table1 {
+        width: 100%;
+        direction: rtl;
+    }
+    
+    .span1, .span2 {
+        font-size: large;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+    
+    #inputText {
+        height: 60px;
+    }
+    
+    .span1, .span2 {
+        font-size: medium;
+    }
+}
+
+/* تحسينات عامة للتجاوب */
+body {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#inputText, #output {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table {
+    overflow-x: auto;
+    display: block;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* تحسين التجاوب للكانفاس */
+#matrix-canvas {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* last table counters */
+#table-7 {
+            width: 100%;
+            max-width: 600px;
+            /* background-color: #ffffff; */
+            color: #333333;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            direction: ltr;
+
+        }
+        #table-7 th, #table-7 td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        #table-7 thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #table-7 thead th {
+            font-weight: bold;
+        }
+        #table-7 tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        #table-7 tbody tr:hover {
+            background-color: #f0fff0;
+        }
+        @media (max-width: 600px) {
+            #table-7 {
+                font-size: 14px;
+            }
+            #table-7 th, #table-7 td {
+                padding: 8px;
+            }
+        }
+
+        
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+    
+    <!--  svg home -->
+   
+    <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+    <canvas id="matrix-canvas"></canvas>
+    <div class="content">
+    <p style="text-align:center">
+        <span style="color:#9b59b6; font-size:22px; background-color:#f1c40f">&nbsp;</span>
+        <span style="color:#2c3e50; font-size:22px; background-color:#f1c40f">عروج فكري روحي</span>
+        <span style="color:#9b59b6; font-size:22px; background-color:#f1c40f">&nbsp;</span>
+    </p>
+    
+    <table id="table1">
+        <thead>
+            <tr>
+                <th class="two">4 </th>
+                <th class="one">1 </th>
+                <th class="two">4 </th>
+                <th class="one">1 </th>
+                <th class="two">4 </th>
+                <th class="one">1 </th>
+                <th class="two">4 </th>
+                <th class="one">10 </th>
+                <th class="two">8 </th>
+                <th class="one">8 </th>
+                <th class="fred">عدد تكرارها</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                
+                <th class="two">ر</th>
+                <th class="one">ه</th>
+                <th class="two">ط</th>
+                <th class="one">ق</th>
+                <th class="two">س</th>
+                <th class="one">ع</th>
+                <th class="two">ح</th>
+                <th class="one">م</th>
+                <th class="two">ل</th>
+                <th class="one">أ</th>
+                <th class="fred">حروف الفرقان</th>
+            </tr>
+           
+        </tbody>
+    </table>
+    <textarea name="text" id="inputText"  oninput="analyzeText()" required></textarea>
+    <button onclick="printResult()">طباعة النتائج</button>
+    <div id="output"></div>
+<div>
+<h1>قارئ الفرقان</h1>
+    <label for="arabicInput">Enter:</label>
+    <input type="text" id="arabicInput" placeholder="ادخل الفرقان< هنا">
+	<button onclick="generateAudio('Audio Aziz')">الاستماع بصوت عزيز</button>
+    <button onclick="generateAudio('Audio Zakarya')">الاستماع بصوت زكريا</button>
+	<br><br>
+	<audio id="audioPlayer" controls></audio>
+    <br><br>
+    <p id="status"></p>
+    <audio id="audioPlayer" controls style="display:none;"></audio> <!-- Audio player -->
+    
+    <table dir="rtl">
+        <thead>
+            <tr>
+                <th colspan="7">المجموعة الثالثة ( 3 )</th>
+             
+            </tr>
+        </thead>
+        <caption>
+            <tr>
+                <th colspan="7" class="pl">المفتاح  : ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر     </th>
+
+             
+            </tr>
+        </caption>
+      
+        <tbody>
+
+<tr>
+    <td>آل عمران&nbsp;<span style="color: #eb0e0e;">(ألم)</span>&nbsp;</td>
+    <td>المزمل</td>
+    <td>الأنبياء</td>
+    <td>الناس</td>
+    <td>النصر</td>
+    <td>الجمعة</td>
+    <td>الشورى&nbsp;<span style="color: #eb0e0e;">( حم-عسق)</span>&nbsp;</td>
+  
+</tr>
+<tr>
+    <td>الفرقان</td>
+    <td>القدر</td>
+    <td>الرحمن</td>
+    <td>الأنعام</td>
+    <td>المسد</td>
+    <td>الفتح</td>
+    <td>النمل&nbsp;<span style="color: #eb0e0e;">( طس )</span>&nbsp;</td>
+</tr>
+<tr>
+    <td>البروج</td>
+    <td>العنكبوت&nbsp;<span style="color: #eb0e0e;">( ألم)</span>&nbsp;</td>
+    <td>قريش</td>
+    <td>الحجرات</td>
+    <td>القصص&nbsp;<span style="color: #eb0e0e;">( طسم )</span>&nbsp;</td>
+    <td>التين</td>
+    <td>محمد</td>
+</tr>
+
+<tr>
+    <td>الشعراء&nbsp;<span style="color: #eb0e0e;">( طسم )</span>&nbsp;</td>
+    <td>الشمس</td>
+    <td>الممتحنة</td>
+    <td>غافر&nbsp;<span style="color: #eb0e0e;">( حم )</span>&nbsp;</td>
+    <td>الجن</td>
+    <td>إبراهيم&nbsp;<span style="color: #eb0e0e;">( ألر )</span>&nbsp;</td>
+    <td>العاديات</td>
+</tr>
+<tr>
+    <td>البينة</td>
+    <td>الإنسان</td>
+    <td>الطور</td>
+    <td>هود&nbsp;<span style="color: #eb0e0e;">( ألر )</span>&nbsp;</td>
+    <td>الضحى</td>
+    <td>الزلزلة</td>
+    <td>الطلاق</td>
+</tr>
+<tr>
+    <td>الجاثية&nbsp;<span style="color: #eb0e0e;">( حم )</span>&nbsp;</td>
+    <td>طه&nbsp;<span style="color: #eb0e0e;">( طه )</span>&nbsp;</td>
+    <td>الفلق</td>
+    <td>التوبة</td>
+    <td>الليل</td>
+    <td>النساء</td>
+    <td>المدثر</td>
+</tr>
+<tr>
+    <td>المؤمنون</td>
+    <td>النجم</td>
+    <td>يوسف&nbsp;<span style="color: #eb0e0e;">( ألر )</span>&nbsp;</td>
+    <td>الشرح</td>
+    <td>الحديد</td>
+    <td>لقمان&nbsp;<span style="color: #eb0e0e;">( ألم)</span>&nbsp;</td>
+    <td>القيامة</td>
+</tr>
+<tr>
+    <td>السجدة&nbsp;<span style="color: #eb0e0e;">( ألم)</span>&nbsp;</td>
+    <td>الهمزة</td>
+    <td>المنافقون</td>
+    <td>الزخرف&nbsp;<span style="color: #eb0e0e;">( حم )</span>&nbsp;</td>
+    <td>فاطر</td>
+    <td>البلد</td>
+    <td> الأحزاب</td>
+</tr>
+<tr>
+    <td>المرسلات</td>
+    <td>الملك</td>
+    <td>الذاريات</td>
+    <td>يونس&nbsp;<span style="color: #eb0e0e;">( ألر )</span>&nbsp;</td>
+    <td>الفجر</td>
+    <td></td>
+    <td></td>
+</tr>
+        </tbody>
+    </table>
+</div>
+</div>
+    <script>
+
+        
+          // svg home
+          const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+        
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const arabic = 'طعمانصلكهيسرحق';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = arabic.charAt(Math.floor(Math.random() * arabic.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(draw, 30);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        // furquan el hoda content javasript
+        const highlightChars = {
+            'ا': '8', 'أ': '8', 'إ': '8', 'ئ': '8','ؤ': '8', 'ء': '8', 'ى': '8', 'آ': '8',
+            'ل': '8',
+            'م': '10',
+            'ح': '4',
+            'ع': '1',
+            'س': '4',
+            'ق': '1',
+            'ط': '4',
+            'ه': '1',
+            'ر': '4'
+        };
+        const highlightChars1 = ['ا', 'أ', 'إ', 'ئ','ؤ', 'ء', 'ى', 'آ', 'ل', 'م', 'ح', 'ع', 'س', 'ق', 'ط', 'ه', 'ر'];
+
+
+        function highlightText(text) {
+            return text.split('').map(char => {
+                if (char in highlightChars) {
+                    const number = highlightChars[char];
+                    const numberClass = parseInt(number) > 9 ? 'number large-number' : 'number';
+                    return `<span class="highlight">${char}<span class="${numberClass}">${number}</span></span>`;
+                }
+                return char;
+            }).join('');
+        }
+
+        // script placeholder
+        
+        const runInput = document.querySelector('#inputText');
+        const line = '   أدخل النص القرآني هنا ......';
+        const speed = 100;
+        let i = 0;
+        let done;
+
+        function run_line() {
+            if (i++ < line.length) {
+                runInput.value = line.substring(0, i);
+            } else {
+                runInput.value = " ";
+                i = 0;
+            }
+            done = setTimeout(run_line, speed);
+        }
+        run_line();
+
+        const inputText = document.getElementById('inputText');
+        const customAttr = inputText.getAttribute('placeholder');
+
+        inputText.addEventListener('focus', function () {
+            clearTimeout(done);
+            this.value = '';
+            if (this.hasAttribute('placeholder')) {
+                this.removeAttribute('placeholder');
+            }
+        });
+
+        inputText.addEventListener('blur', function () {
+            this.setAttribute('placeholder', customAttr);
+        });
+
+        //end script place holder
+        function highlightText1(text) {
+            return text.split('').map(char => 
+                highlightChars1.includes(char) ? `<span class="highlight">${char}</span>` : char
+            ).join('');
+        }
+
+
+        function analyzeText() {
+            const inputText = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `<p dir="rtl"><span style="color:#ff0099"><span style="font-size:22px"><span style="background-color:#000000">&nbsp;ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر&nbsp;</span></span></span></p>`;
+
+            const lines = inputText.split('\n');
+            let totalAnalysis = '';
+            
+            lines.forEach((line, index) => {
+                if (line.trim() !== '') {
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText1(line)}</div>`;
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText(line)}</div>`;
+                    const lineAnalysis = analyzeLine(line);
+                    outputDiv.innerHTML += `<div class="output-line">فرقان: ${lineAnalysis}</div>`;
+                    totalAnalysis += lineAnalysis + ' ';
+                }
+            });
+
+            const wordCount = countWords(inputText);
+            const allCharCount = countAllChars(inputText);
+            const specificCharCounts = countSpecificChars(inputText);
+
+   
+        outputDiv.innerHTML += `<div class="counters">
+           <table id="table-7">
+        <thead>
+            <tr>
+                <th colspan="2">فرقان الهدى عروج فكري</th>
+            </tr>
+            <tr>
+                <th colspan="2">إحصائيات النص القرآني كاملا</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="tasnimsaid">${wordCount}</th>
+                <th>عدد الكلمات</th>
+            </tr>
+            <tr>
+                <th id="tasnimsaid1">${allCharCount}</th>
+                <th>عدد جميع الحروف</th>
+            </tr>
+            <tr>
+                <th id="tasnimsaid2">${specificCharCounts.total}</th>
+                <th>عدد الحروف (أ، ل، م، ح، ع، س، ق، ط، ه، ر)</th>
+            </tr>
+            <tr>
+                <th id="tasnimsaid3">${specificCharCounts.alif}</th>
+                <th>عدد حرف (أ)</th>
+            </tr>
+            <tr>
+                <th id="tasnimsaid4">${specificCharCounts.lam}</th>
+                <th>عدد حرف (ل)</th>
+            </tr>
+            <tr>
+                <th id="tasnimsaid5">${specificCharCounts.meem}</th>
+                <th>عدد حرف (م)</th>
+            </tr>
+             <tr>
+   
+    <tr>
+    <th>${specificCharCounts.hhae}</th>
+    <th>عدد حرف (ح)</th>
+   </tr>
+    <tr>
+    <th>${specificCharCounts.ine}</th>
+    <th>عدد حرف (ع)</th>
+   </tr>
+    <tr>
+    <th>${specificCharCounts.sine}</th>
+    <th>عدد حرف (س)</th>
+   </tr>
+    <tr>
+    <th>${specificCharCounts.paf}</th>
+    <th>عدد حرف (ق)</th>
+   </tr>
+    <tr>
+    <th>${specificCharCounts.ttae}</th>
+    <th>عدد حرف (ط)</th>
+   </tr>
+    <tr>
+    <th>${specificCharCounts.hae}</th>
+    <th>عدد حرف (ه)</th>
+   </tr>
+            <tr>
+                <th id="tasnimsaid6">${specificCharCounts.raa}</th>
+                <th>عدد حرف (ر)</th>
+            </tr>
+        </tbody>
+    </table>
+
+            </div>`;
+        }
+
+        function analyzeLine(line) {
+            const words = line.split(' ');
+            return words.map(analyzeWord).join('<span class="comma"> ، </span>');
+        }
+
+        function analyzeWord(word) {
+            let result = '';
+            for (let char of word) {
+                if (['ا', 'أ','ئ', 'ى','ء','ؤ' , 'إ', 'آ'].includes(char)) {
+                    result += 'ألف ألف ألف ألف ألف ألف ألف ألف  ';
+                } else if (char === 'ل') {
+                    result += 'لام لام لام لام لام لام لام لام ';
+                } else if (char === 'م') {
+                    result += 'ميم ميم ميم ميم ميم ميم ميم ميم ميم ميم ';
+                } else if (char === 'ح') {
+                    result += 'حاء حاء حاء حاء ';
+                }else if (char === 'ع') {
+                    result += 'عين ';
+                }else if (char === 'س') {
+                    result += 'سين سين سين سين ';
+                }else if (char === 'ق') {
+                    result += 'قاف ';
+                }else if (char === 'ط') {
+                    result += ' طاء طاء طاء طاء ';
+                }else if (char === 'ه') {
+                    result += 'هاء ';
+                }else if (char === 'ر') {
+                    result += 'راء راء راء راء ';
+                }
+            }
+            return result.trim();
+        }
+
+        function countWords(text) {
+            return text.trim().split(/\s+/).length;
+        }
+
+        function countAllChars(text) {
+            return text.replace(/\s/g, '').length;
+        }
+
+        function countSpecificChars(text) {
+            const counts = {
+                alif: 0,
+                lam: 0,
+                meem: 0,
+                hhae: 0,
+                ine: 0,
+                sine: 0,
+                paf: 0,
+                ttae: 0,
+                hae: 0,
+                raa: 0,
+                total: 0
+            };
+
+            for (let char of text) {
+                if (['ا', 'أ','ئ', 'ى','ء','ؤ' , 'إ', 'آ'].includes(char)) {
+                    counts.alif++;
+                    counts.total++;
+                } else if (char === 'ل') {
+                    counts.lam++;
+                    counts.total++;
+                } else if (char === 'م') {
+                    counts.meem++;
+                    counts.total++;
+                } else if (char === 'ح') {
+                    counts.hhae++;
+                    counts.total++;
+                }else if (char === 'ع') {
+                    counts.ine++;
+                    counts.total++;
+                }else if (char === 'س') {
+                    counts.sine++;
+                    counts.total++;
+                }else if (char === 'ق') {
+                    counts.paf++;
+                    counts.total++;
+                }else if (char === 'ط') {
+                    counts.ttae++;
+                    counts.total++;
+                }else if (char === 'ه') {
+                    counts.hae++;
+                    counts.total++;
+                }else if (char === 'ر') {
+                    counts.raa++;
+                    counts.total++;
+                }
+            }
+
+            return counts;
+        }
+                async function generateAudio(library) {
+            const arabicInput = document.getElementById('arabicInput').value;
+
+            if (!arabicInput) {
+                alert('Please enter Arabic text.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/synthesize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ arabicInput, library })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = data.output;
+                    audioPlayer.play();
+                } else {
+                    alert(data.error || 'Error generating audio.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to generate audio.');
+            }
+        }
+		function playAudio() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.play();
+        }
+
+        function pauseAudio() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            if (!audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+        }
+
+        function printResult() {
+            const printContents = document.getElementById('output').innerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+</body>
+</html>

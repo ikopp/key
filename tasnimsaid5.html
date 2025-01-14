@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            direction: ltr;
+        }
+        .container {
+            width: 90%;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .rodrigo{
+            background-color: aqua;
+            color: black;
+            text-align: center;
+            font-size: xx-large;
+        }
+
+		
+/* تنسيق حاوية الرسم البياني */
+.chart-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+@media screen and (max-width: 768px) {
+    .chart-container {
+        width: 95%;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .chart-container {
+        width: 100%;
+        padding: 5px;
+    }
+}
+
+
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+    <script>
+		
+          // svg home
+		  const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+        function sortTable(n) {
+            const table = document.getElementById("professional-table");
+            let switching = true;
+            let shouldSwitch;
+            let switchCount = 0;
+            let direction = "asc";
+            let rows, i, x, y, shouldSwitchFunc;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    if (direction === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (direction === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchCount++;
+                } else {
+                    if (switchCount === 0 && direction === "asc") {
+                        direction = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+	 <!--  svg home -->
+   
+	 <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+	<!-- إضافة قسم للرسم البياني -->
+<div class="chart-container">
+    <canvas id="dataChart"></canvas>
+</div>
+    <div class="container">
+        <table id="professional-table">
+            <caption class="rodrigo">جدول الفروق والنسب (الآيات ، الحروف ، الكلمات )</caption>
+            <thead>
+                <tr>
+                    <th colspan="2" rowspan="1" scope="col">   الأعداد والنسب التراكمية (الحروف)</th>
+                    <th colspan="2" rowspan="1" scope="col">   الأعداد والنسب التراكمية(الكلمات)</th>
+                    <th colspan="2" rowspan="1" scope="col">الأعداد والنسب التراكمية (الآيات) </th>
+                    <th colspan="2" rowspan="1" scope="col">سورة 2</th>
+                    <th colspan="2" rowspan="1" scope="col">سورة 1</th>
+                    <th scope="col" onclick="sortTable(10)">فرق الترتيب</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+		<tr>
+			<td>0.19%</td>
+			<td>142</td>
+			<td>0.06%</td>
+			<td>43</td>
+			<td>0.04%</td>
+			<td>12</td>
+			<td>96</td>
+			<td>العلق</td>
+			<td>1</td>
+			<td>الفاتحة</td>
+			<td>95</td>
+		</tr>
+		<tr>
+			<td>0.22%</td>
+			<td>24352</td>
+			<td>0.18%</td>
+			<td>5829</td>
+			<td>0.15%</td>
+			<td>222</td>
+			<td>68</td>
+			<td>القلم</td>
+			<td>2</td>
+			<td>البقرة</td>
+			<td>66</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>38117</td>
+			<td>0.13%</td>
+			<td>9132</td>
+			<td>0.11%</td>
+			<td>402</td>
+			<td>73</td>
+			<td>المزمل</td>
+			<td>3</td>
+			<td>آل عمران</td>
+			<td>70</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>57039</td>
+			<td>0.15%</td>
+			<td>12588</td>
+			<td>0.13%</td>
+			<td>522</td>
+			<td>74</td>
+			<td>المدثر</td>
+			<td>4</td>
+			<td>النساء</td>
+			<td>70</td>
+		</tr>
+		<tr>
+			<td>0.12%</td>
+			<td>68792</td>
+			<td>0.08%</td>
+			<td>15401</td>
+			<td>0.06%</td>
+			<td>635</td>
+			<td>1</td>
+			<td>الفاتحة</td>
+			<td>5</td>
+			<td>المائدة</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>0.09%</td>
+			<td>81133</td>
+			<td>0.04%</td>
+			<td>18433</td>
+			<td>0.03%</td>
+			<td>795</td>
+			<td>111</td>
+			<td>المسد</td>
+			<td>6</td>
+			<td>الأنعام</td>
+			<td>105</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>94779</td>
+			<td>0.09%</td>
+			<td>21673</td>
+			<td>0.07%</td>
+			<td>972</td>
+			<td>81</td>
+			<td>التكوير</td>
+			<td>7</td>
+			<td>الأعراف</td>
+			<td>74</td>
+		</tr>
+		<tr>
+			<td>0.11%</td>
+			<td>99791</td>
+			<td>0.07%</td>
+			<td>22844</td>
+			<td>0.05%</td>
+			<td>1028</td>
+			<td>87</td>
+			<td>الأعلى</td>
+			<td>8</td>
+			<td>الأنفال</td>
+			<td>79</td>
+		</tr>
+		<tr>
+			<td>0.10%</td>
+			<td>110352</td>
+			<td>0.06%</td>
+			<td>25275</td>
+			<td>0.04%</td>
+			<td>1136</td>
+			<td>92</td>
+			<td>الليل</td>
+			<td>9</td>
+			<td>التوبة</td>
+			<td>83</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>117204</td>
+			<td>0.11%</td>
+			<td>26977</td>
+			<td>0.09%</td>
+			<td>1215</td>
+			<td>89</td>
+			<td>الفجر</td>
+			<td>10</td>
+			<td>يونس</td>
+			<td>79</td>
+		</tr>
+		<tr>
+			<td>0.08%</td>
+			<td>124973</td>
+			<td>0.05%</td>
+			<td>28884</td>
+			<td>0.03%</td>
+			<td>1327</td>
+			<td>93</td>
+			<td>الضحى</td>
+			<td>11</td>
+			<td>هود</td>
+			<td>82</td>
+		</tr>
+		<tr>
+			<td>0.12%</td>
+			<td>131996</td>
+			<td>0.07%</td>
+			<td>30652</td>
+			<td>0.05%</td>
+			<td>1430</td>
+			<td>94</td>
+			<td>الشرح</td>
+			<td>12</td>
+			<td>يوسف</td>
+			<td>82</td>
+		</tr>
+		<tr>
+			<td>0.07%</td>
+			<td>135376</td>
+			<td>0.04%</td>
+			<td>31492</td>
+			<td>0.02%</td>
+			<td>1470</td>
+			<td>103</td>
+			<td>العصر</td>
+			<td>13</td>
+			<td>الرعد</td>
+			<td>90</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>138673</td>
+			<td>0.08%</td>
+			<td>32283</td>
+			<td>0.06%</td>
+			<td>1511</td>
+			<td>100</td>
+			<td>العاديات</td>
+			<td>14</td>
+			<td>إبراهيم</td>
+			<td>86</td>
+		</tr>
+		<tr>
+			<td>0.06%</td>
+			<td>141428</td>
+			<td>0.03%</td>
+			<td>32931</td>
+			<td>0.02%</td>
+			<td>1607</td>
+			<td>108</td>
+			<td>الكوثر</td>
+			<td>15</td>
+			<td>الحجر</td>
+			<td>93</td>
+		</tr>
+		<tr>
+			<td>0.11%</td>
+			<td>148948</td>
+			<td>0.06%</td>
+			<td>34748</td>
+			<td>0.04%</td>
+			<td>1728</td>
+			<td>102</td>
+			<td>التكاثر</td>
+			<td>16</td>
+			<td>النحل</td>
+			<td>86</td>
+		</tr>
+		<tr>
+			<td>0.09%</td>
+			<td>155316</td>
+			<td>0.05%</td>
+			<td>36282</td>
+			<td>0.03%</td>
+			<td>1832</td>
+			<td>107</td>
+			<td>الماعون</td>
+			<td>17</td>
+			<td>الإسراء</td>
+			<td>90</td>
+		</tr>
+		<tr>
+			<td>0.10%</td>
+			<td>161646</td>
+			<td>0.06%</td>
+			<td>37838</td>
+			<td>0.04%</td>
+			<td>1936</td>
+			<td>109</td>
+			<td>الكافرون</td>
+			<td>18</td>
+			<td>الكهف</td>
+			<td>91</td>
+		</tr>
+		<tr>
+			<td>0.08%</td>
+			<td>165385</td>
+			<td>0.04%</td>
+			<td>38787</td>
+			<td>0.03%</td>
+			<td>2029</td>
+			<td>105</td>
+			<td>الفيل</td>
+			<td>19</td>
+			<td>مريم</td>
+			<td>86</td>
+		</tr>
+		<tr>
+			<td>0.07%</td>
+			<td>169602</td>
+			<td>0.03%</td>
+			<td>40118</td>
+			<td>0.02%</td>
+			<td>2159</td>
+			<td>113</td>
+			<td>الفلق</td>
+			<td>20</td>
+			<td>طه</td>
+			<td>93</td>
+		</tr>
+		<tr>
+			<td>0.08%</td>
+			<td>174447</td>
+			<td>0.04%</td>
+			<td>41272</td>
+			<td>0.03%</td>
+			<td>2265</td>
+			<td>114</td>
+			<td>الناس</td>
+			<td>21</td>
+			<td>الأنبياء</td>
+			<td>93</td>
+		</tr>
+		<tr>
+			<td>0.06%</td>
+			<td>178188</td>
+			<td>0.03%</td>
+			<td>42536</td>
+			<td>0.02%</td>
+			<td>2339</td>
+			<td>112</td>
+			<td>الإخلاص</td>
+			<td>22</td>
+			<td>الحج</td>
+			<td>90</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>180221</td>
+			<td>0.10%</td>
+			<td>43229</td>
+			<td>0.08%</td>
+			<td>2395</td>
+			<td>53</td>
+			<td>النجم</td>
+			<td>23</td>
+			<td>المؤمنون</td>
+			<td>30</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>183625</td>
+			<td>0.09%</td>
+			<td>44412</td>
+			<td>0.07%</td>
+			<td>2417</td>
+			<td>80</td>
+			<td>عبس</td>
+			<td>24</td>
+			<td>النور</td>
+			<td>56</td>
+		</tr>
+		<tr>
+			<td>0.09%</td>
+			<td>186349</td>
+			<td>0.05%</td>
+			<td>45275</td>
+			<td>0.03%</td>
+			<td>2489</td>
+			<td>97</td>
+			<td>القدر</td>
+			<td>25</td>
+			<td>الفرقان</td>
+			<td>72</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>189934</td>
+			<td>0.08%</td>
+			<td>46543</td>
+			<td>0.06%</td>
+			<td>2701</td>
+			<td>91</td>
+			<td>الشمس</td>
+			<td>26</td>
+			<td>الشعراء</td>
+			<td>65</td>
+		</tr>
+		<tr>
+			<td>0.12%</td>
+			<td>193332</td>
+			<td>0.07%</td>
+			<td>47599</td>
+			<td>0.05%</td>
+			<td>2772</td>
+			<td>85</td>
+			<td>البروج</td>
+			<td>27</td>
+			<td>النمل</td>
+			<td>58</td>
+		</tr>
+		<tr>
+			<td>0.08%</td>
+			<td>197453</td>
+			<td>0.04%</td>
+			<td>49006</td>
+			<td>0.03%</td>
+			<td>2852</td>
+			<td>95</td>
+			<td>التين</td>
+			<td>28</td>
+			<td>القصص</td>
+			<td>67</td>
+		</tr>
+		<tr>
+			<td>0.07%</td>
+			<td>200499</td>
+			<td>0.03%</td>
+			<td>49969</td>
+			<td>0.02%</td>
+			<td>2917</td>
+			<td>106</td>
+			<td>قريش</td>
+			<td>29</td>
+			<td>العنكبوت</td>
+			<td>77</td>
+		</tr>
+		<tr>
+			<td>0.10%</td>
+			<td>202867</td>
+			<td>0.06%</td>
+			<td>50750</td>
+			<td>0.04%</td>
+			<td>2966</td>
+			<td>101</td>
+			<td>القارعة</td>
+			<td>30</td>
+			<td>الروم</td>
+			<td>71</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>204093</td>
+			<td>0.08%</td>
+			<td>51134</td>
+			<td>0.06%</td>
+			<td>2960</td>
+			<td>75</td>
+			<td>القيامة</td>
+			<td>31</td>
+			<td>لقمان</td>
+			<td>44</td>
+		</tr>
+		<tr>
+			<td>0.08%</td>
+			<td>205483</td>
+			<td>0.04%</td>
+			<td>51473</td>
+			<td>0.03%</td>
+			<td>2981</td>
+			<td>104</td>
+			<td>الهمزة</td>
+			<td>32</td>
+			<td>السجدة</td>
+			<td>72</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>208146</td>
+			<td>0.09%</td>
+			<td>52595</td>
+			<td>0.07%</td>
+			<td>3004</td>
+			<td>77</td>
+			<td>المرسلات</td>
+			<td>33</td>
+			<td>الأحزاب</td>
+			<td>44</td>
+		</tr>
+		<tr>
+			<td>0.11%</td>
+			<td>209380</td>
+			<td>0.07%</td>
+			<td>53105</td>
+			<td>0.05%</td>
+			<td>3013</td>
+			<td>50</td>
+			<td>ق</td>
+			<td>34</td>
+			<td>سبأ</td>
+			<td>16</td>
+		</tr>
+		<tr>
+			<td>0.10%</td>
+			<td>211595</td>
+			<td>0.06%</td>
+			<td>53802</td>
+			<td>0.04%</td>
+			<td>3038</td>
+			<td>90</td>
+			<td>البلد</td>
+			<td>35</td>
+			<td>فاطر</td>
+			<td>55</td>
+		</tr>
+		<tr>
+			<td>0.12%</td>
+			<td>214334</td>
+			<td>0.07%</td>
+			<td>54470</td>
+			<td>0.05%</td>
+			<td>3104</td>
+			<td>86</td>
+			<td>الطارق</td>
+			<td>36</td>
+			<td>يس</td>
+			<td>50</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>215922</td>
+			<td>0.10%</td>
+			<td>54993</td>
+			<td>0.08%</td>
+			<td>3231</td>
+			<td>54</td>
+			<td>القمر</td>
+			<td>37</td>
+			<td>الصافات</td>
+			<td>17</td>
+		</tr>
+		<tr>
+			<td>1.00%</td>
+			<td>215922</td>
+			<td>1.00%</td>
+			<td>54995</td>
+			<td>1.00%</td>
+			<td>3231</td>
+			<td>38</td>
+			<td>ص</td>
+			<td>38</td>
+			<td>ص</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>205176</td>
+			<td>0.14%</td>
+			<td>52831</td>
+			<td>0.12%</td>
+			<td>3100</td>
+			<td>7</td>
+			<td>الأعراف</td>
+			<td>39</td>
+			<td>الزمر</td>
+			<td>32</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>207588</td>
+			<td>0.08%</td>
+			<td>53774</td>
+			<td>0.06%</td>
+			<td>3157</td>
+			<td>72</td>
+			<td>الجن</td>
+			<td>40</td>
+			<td>غافر</td>
+			<td>32</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>207588</td>
+			<td>0.09%</td>
+			<td>53839</td>
+			<td>0.07%</td>
+			<td>3128</td>
+			<td>36</td>
+			<td>يس</td>
+			<td>41</td>
+			<td>فصلت</td>
+			<td>5</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>206623</td>
+			<td>0.11%</td>
+			<td>53803</td>
+			<td>0.09%</td>
+			<td>3104</td>
+			<td>25</td>
+			<td>الفرقان</td>
+			<td>42</td>
+			<td>الشورى</td>
+			<td>17</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>206508</td>
+			<td>0.10%</td>
+			<td>53865</td>
+			<td>0.08%</td>
+			<td>3148</td>
+			<td>35</td>
+			<td>فاطر</td>
+			<td>43</td>
+			<td>الزخرف</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>204123</td>
+			<td>0.12%</td>
+			<td>53239</td>
+			<td>0.10%</td>
+			<td>3109</td>
+			<td>19</td>
+			<td>مريم</td>
+			<td>44</td>
+			<td>الدخان</td>
+			<td>25</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>200423</td>
+			<td>0.13%</td>
+			<td>52373</td>
+			<td>0.11%</td>
+			<td>3011</td>
+			<td>20</td>
+			<td>طه</td>
+			<td>45</td>
+			<td>الجاثية</td>
+			<td>25</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>200663</td>
+			<td>0.11%</td>
+			<td>52640</td>
+			<td>0.09%</td>
+			<td>2950</td>
+			<td>56</td>
+			<td>الواقعة</td>
+			<td>46</td>
+			<td>الأحقاف</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>196688</td>
+			<td>0.15%</td>
+			<td>51860</td>
+			<td>0.13%</td>
+			<td>2761</td>
+			<td>26</td>
+			<td>الشعراء</td>
+			<td>47</td>
+			<td>محمد</td>
+			<td>21</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>193594</td>
+			<td>0.12%</td>
+			<td>51255</td>
+			<td>0.10%</td>
+			<td>2697</td>
+			<td>27</td>
+			<td>النمل</td>
+			<td>48</td>
+			<td>الفتح</td>
+			<td>21</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>188962</td>
+			<td>0.14%</td>
+			<td>50167</td>
+			<td>0.12%</td>
+			<td>2627</td>
+			<td>28</td>
+			<td>القصص</td>
+			<td>49</td>
+			<td>الحجرات</td>
+			<td>21</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>183975</td>
+			<td>0.13%</td>
+			<td>49007</td>
+			<td>0.11%</td>
+			<td>2561</td>
+			<td>17</td>
+			<td>الإسراء</td>
+			<td>50</td>
+			<td>ق</td>
+			<td>33</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>178060</td>
+			<td>0.11%</td>
+			<td>47534</td>
+			<td>0.09%</td>
+			<td>2512</td>
+			<td>10</td>
+			<td>يونس</td>
+			<td>51</td>
+			<td>الذاريات</td>
+			<td>41</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>171720</td>
+			<td>0.12%</td>
+			<td>45899</td>
+			<td>0.10%</td>
+			<td>2438</td>
+			<td>11</td>
+			<td>هود</td>
+			<td>52</td>
+			<td>الطور</td>
+			<td>41</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>165949</td>
+			<td>0.13%</td>
+			<td>44463</td>
+			<td>0.11%</td>
+			<td>2389</td>
+			<td>12</td>
+			<td>يوسف</td>
+			<td>53</td>
+			<td>النجم</td>
+			<td>41</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>164593</td>
+			<td>0.10%</td>
+			<td>44151</td>
+			<td>0.08%</td>
+			<td>2345</td>
+			<td>15</td>
+			<td>الحجر</td>
+			<td>54</td>
+			<td>القمر</td>
+			<td>39</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>153811</td>
+			<td>0.14%</td>
+			<td>41447</td>
+			<td>0.12%</td>
+			<td>2258</td>
+			<td>6</td>
+			<td>الأنعام</td>
+			<td>55</td>
+			<td>الرحمن</td>
+			<td>49</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>151730</td>
+			<td>0.15%</td>
+			<td>40961</td>
+			<td>0.13%</td>
+			<td>2172</td>
+			<td>37</td>
+			<td>الصافات</td>
+			<td>56</td>
+			<td>الواقعة</td>
+			<td>19</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>151268</td>
+			<td>0.09%</td>
+			<td>40988</td>
+			<td>0.07%</td>
+			<td>2167</td>
+			<td>31</td>
+			<td>لقمان</td>
+			<td>57</td>
+			<td>الحديد</td>
+			<td>26</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>149110</td>
+			<td>0.10%</td>
+			<td>40579</td>
+			<td>0.08%</td>
+			<td>2135</td>
+			<td>34</td>
+			<td>سبأ</td>
+			<td>58</td>
+			<td>المجادلة</td>
+			<td>24</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>145689</td>
+			<td>0.11%</td>
+			<td>39849</td>
+			<td>0.09%</td>
+			<td>2084</td>
+			<td>39</td>
+			<td>الزمر</td>
+			<td>59</td>
+			<td>الحشر</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>141797</td>
+			<td>0.12%</td>
+			<td>38973</td>
+			<td>0.10%</td>
+			<td>2012</td>
+			<td>40</td>
+			<td>غافر</td>
+			<td>60</td>
+			<td>الممتحنة</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>139387</td>
+			<td>0.13%</td>
+			<td>38405</td>
+			<td>0.11%</td>
+			<td>1972</td>
+			<td>41</td>
+			<td>فصلت</td>
+			<td>61</td>
+			<td>الصف</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>136505</td>
+			<td>0.11%</td>
+			<td>37722</td>
+			<td>0.09%</td>
+			<td>1930</td>
+			<td>42</td>
+			<td>الشورى</td>
+			<td>62</td>
+			<td>الجمعة</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>133618</td>
+			<td>0.12%</td>
+			<td>37060</td>
+			<td>0.10%</td>
+			<td>1852</td>
+			<td>43</td>
+			<td>الزخرف</td>
+			<td>63</td>
+			<td>المنافقون</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>132963</td>
+			<td>0.10%</td>
+			<td>36956</td>
+			<td>0.08%</td>
+			<td>1811</td>
+			<td>44</td>
+			<td>الدخان</td>
+			<td>64</td>
+			<td>التغابن</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>131833</td>
+			<td>0.09%</td>
+			<td>36747</td>
+			<td>0.07%</td>
+			<td>1786</td>
+			<td>45</td>
+			<td>الجاثية</td>
+			<td>65</td>
+			<td>الطلاق</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>130041</td>
+			<td>0.11%</td>
+			<td>36355</td>
+			<td>0.09%</td>
+			<td>1763</td>
+			<td>46</td>
+			<td>الأحقاف</td>
+			<td>66</td>
+			<td>التحريم</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>129847</td>
+			<td>0.10%</td>
+			<td>36325</td>
+			<td>0.08%</td>
+			<td>1733</td>
+			<td>51</td>
+			<td>الذاريات</td>
+			<td>67</td>
+			<td>الملك</td>
+			<td>16</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>130698</td>
+			<td>0.08%</td>
+			<td>36534</td>
+			<td>0.06%</td>
+			<td>1759</td>
+			<td>88</td>
+			<td>الغاشية</td>
+			<td>68</td>
+			<td>القلم</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>125445</td>
+			<td>0.13%</td>
+			<td>35212</td>
+			<td>0.11%</td>
+			<td>1701</td>
+			<td>18</td>
+			<td>الكهف</td>
+			<td>69</td>
+			<td>الحاقة</td>
+			<td>51</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>118750</td>
+			<td>0.14%</td>
+			<td>33588</td>
+			<td>0.12%</td>
+			<td>1617</td>
+			<td>16</td>
+			<td>النحل</td>
+			<td>70</td>
+			<td>المعارج</td>
+			<td>54</td>
+		</tr>
+		<tr>
+			<td>1.00%</td>
+			<td>118750</td>
+			<td>1.00%</td>
+			<td>33588</td>
+			<td>1.00%</td>
+			<td>1617</td>
+			<td>71</td>
+			<td>نوح</td>
+			<td>71</td>
+			<td>نوح</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>116172</td>
+			<td>0.11%</td>
+			<td>33042</td>
+			<td>0.09%</td>
+			<td>1593</td>
+			<td>14</td>
+			<td>إبراهيم</td>
+			<td>72</td>
+			<td>الجن</td>
+			<td>58</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>112197</td>
+			<td>0.15%</td>
+			<td>32068</td>
+			<td>0.13%</td>
+			<td>1501</td>
+			<td>21</td>
+			<td>الأنبياء</td>
+			<td>73</td>
+			<td>المزمل</td>
+			<td>52</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>108410</td>
+			<td>0.14%</td>
+			<td>31274</td>
+			<td>0.12%</td>
+			<td>1439</td>
+			<td>23</td>
+			<td>المؤمنون</td>
+			<td>74</td>
+			<td>المدثر</td>
+			<td>51</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>107564</td>
+			<td>0.09%</td>
+			<td>31066</td>
+			<td>0.07%</td>
+			<td>1449</td>
+			<td>32</td>
+			<td>السجدة</td>
+			<td>75</td>
+			<td>القيامة</td>
+			<td>43</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>107403</td>
+			<td>0.10%</td>
+			<td>30997</td>
+			<td>0.08%</td>
+			<td>1431</td>
+			<td>52</td>
+			<td>الطور</td>
+			<td>76</td>
+			<td>الإنسان</td>
+			<td>24</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>106905</td>
+			<td>0.11%</td>
+			<td>30801</td>
+			<td>0.09%</td>
+			<td>1451</td>
+			<td>67</td>
+			<td>الملك</td>
+			<td>77</td>
+			<td>المرسلات</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>106578</td>
+			<td>0.12%</td>
+			<td>30715</td>
+			<td>0.10%</td>
+			<td>1439</td>
+			<td>69</td>
+			<td>الحاقة</td>
+			<td>78</td>
+			<td>النبأ</td>
+			<td>9</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>106397</td>
+			<td>0.13%</td>
+			<td>30677</td>
+			<td>0.11%</td>
+			<td>1441</td>
+			<td>70</td>
+			<td>المعارج</td>
+			<td>79</td>
+			<td>النازعات</td>
+			<td>9</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>106176</td>
+			<td>0.14%</td>
+			<td>30636</td>
+			<td>0.12%</td>
+			<td>1443</td>
+			<td>78</td>
+			<td>النبأ</td>
+			<td>80</td>
+			<td>عبس</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>105929</td>
+			<td>0.15%</td>
+			<td>30561</td>
+			<td>0.13%</td>
+			<td>1426</td>
+			<td>79</td>
+			<td>النازعات</td>
+			<td>81</td>
+			<td>التكوير</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>1.00%</td>
+			<td>105929</td>
+			<td>1.00%</td>
+			<td>30561</td>
+			<td>1.00%</td>
+			<td>1426</td>
+			<td>82</td>
+			<td>الانفطار</td>
+			<td>82</td>
+			<td>الانفطار</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>106220</td>
+			<td>0.10%</td>
+			<td>30622</td>
+			<td>0.08%</td>
+			<td>1437</td>
+			<td>84</td>
+			<td>الإنشقاق</td>
+			<td>83</td>
+			<td>المطففين</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>103264</td>
+			<td>0.11%</td>
+			<td>29913</td>
+			<td>0.09%</td>
+			<td>1402</td>
+			<td>30</td>
+			<td>الروم</td>
+			<td>84</td>
+			<td>الإنشقاق</td>
+			<td>54</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>99899</td>
+			<td>0.12%</td>
+			<td>29042</td>
+			<td>0.10%</td>
+			<td>1355</td>
+			<td>29</td>
+			<td>العنكبوت</td>
+			<td>85</td>
+			<td>البروج</td>
+			<td>56</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>99408</td>
+			<td>0.13%</td>
+			<td>28934</td>
+			<td>0.11%</td>
+			<td>1336</td>
+			<td>83</td>
+			<td>المطففين</td>
+			<td>86</td>
+			<td>الطارق</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>0.22%</td>
+			<td>74195</td>
+			<td>0.17%</td>
+			<td>22862</td>
+			<td>0.15%</td>
+			<td>1069</td>
+			<td>2</td>
+			<td>البقرة</td>
+			<td>87</td>
+			<td>الأعلى</td>
+			<td>85</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>69270</td>
+			<td>0.10%</td>
+			<td>21720</td>
+			<td>0.08%</td>
+			<td>1020</td>
+			<td>8</td>
+			<td>الأنفال</td>
+			<td>88</td>
+			<td>الغاشية</td>
+			<td>80</td>
+		</tr>
+		<tr>
+			<td>0.21%</td>
+			<td>55200</td>
+			<td>0.16%</td>
+			<td>18356</td>
+			<td>0.14%</td>
+			<td>850</td>
+			<td>3</td>
+			<td>آل عمران</td>
+			<td>89</td>
+			<td>الفجر</td>
+			<td>86</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>49918</td>
+			<td>0.15%</td>
+			<td>17150</td>
+			<td>0.13%</td>
+			<td>797</td>
+			<td>33</td>
+			<td>الأحزاب</td>
+			<td>90</td>
+			<td>البلد</td>
+			<td>57</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>48659</td>
+			<td>0.11%</td>
+			<td>16852</td>
+			<td>0.09%</td>
+			<td>799</td>
+			<td>60</td>
+			<td>الممتحنة</td>
+			<td>91</td>
+			<td>الشمس</td>
+			<td>31</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>32941</td>
+			<td>0.14%</td>
+			<td>13178</td>
+			<td>0.12%</td>
+			<td>644</td>
+			<td>4</td>
+			<td>النساء</td>
+			<td>92</td>
+			<td>الليل</td>
+			<td>88</td>
+		</tr>
+		<tr>
+			<td>0.11%</td>
+			<td>32955</td>
+			<td>0.06%</td>
+			<td>13182</td>
+			<td>0.04%</td>
+			<td>647</td>
+			<td>99</td>
+			<td>الزلزلة</td>
+			<td>93</td>
+			<td>الضحى</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>30582</td>
+			<td>0.12%</td>
+			<td>12634</td>
+			<td>0.10%</td>
+			<td>626</td>
+			<td>57</td>
+			<td>الحديد</td>
+			<td>94</td>
+			<td>الشرح</td>
+			<td>37</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>28378</td>
+			<td>0.10%</td>
+			<td>12126</td>
+			<td>0.08%</td>
+			<td>596</td>
+			<td>47</td>
+			<td>محمد</td>
+			<td>95</td>
+			<td>التين</td>
+			<td>48</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>25209</td>
+			<td>0.11%</td>
+			<td>11344</td>
+			<td>0.09%</td>
+			<td>572</td>
+			<td>13</td>
+			<td>الرعد</td>
+			<td>96</td>
+			<td>العلق</td>
+			<td>83</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>23736</td>
+			<td>0.13%</td>
+			<td>11023</td>
+			<td>0.11%</td>
+			<td>499</td>
+			<td>55</td>
+			<td>الرحمن</td>
+			<td>97</td>
+			<td>القدر</td>
+			<td>42</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>23009</td>
+			<td>0.10%</td>
+			<td>10874</td>
+			<td>0.08%</td>
+			<td>476</td>
+			<td>76</td>
+			<td>الإنسان</td>
+			<td>98</td>
+			<td>البينة</td>
+			<td>22</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>21995</td>
+			<td>0.09%</td>
+			<td>10631</td>
+			<td>0.07%</td>
+			<td>472</td>
+			<td>65</td>
+			<td>الطلاق</td>
+			<td>99</td>
+			<td>الزلزلة</td>
+			<td>34</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>21753</td>
+			<td>0.08%</td>
+			<td>10577</td>
+			<td>0.06%</td>
+			<td>475</td>
+			<td>98</td>
+			<td>البينة</td>
+			<td>100</td>
+			<td>العاديات</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>19997</td>
+			<td>0.11%</td>
+			<td>10166</td>
+			<td>0.09%</td>
+			<td>462</td>
+			<td>59</td>
+			<td>الحشر</td>
+			<td>101</td>
+			<td>القارعة</td>
+			<td>42</td>
+		</tr>
+		<tr>
+			<td>0.17%</td>
+			<td>14459</td>
+			<td>0.12%</td>
+			<td>8878</td>
+			<td>0.10%</td>
+			<td>406</td>
+			<td>24</td>
+			<td>النور</td>
+			<td>102</td>
+			<td>التكاثر</td>
+			<td>78</td>
+		</tr>
+		<tr>
+			<td>0.18%</td>
+			<td>8792</td>
+			<td>0.13%</td>
+			<td>7613</td>
+			<td>0.11%</td>
+			<td>331</td>
+			<td>22</td>
+			<td>الحج</td>
+			<td>103</td>
+			<td>العصر</td>
+			<td>81</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>8145</td>
+			<td>0.09%</td>
+			<td>7466</td>
+			<td>0.07%</td>
+			<td>329</td>
+			<td>63</td>
+			<td>المنافقون</td>
+			<td>104</td>
+			<td>الهمزة</td>
+			<td>41</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>6250</td>
+			<td>0.10%</td>
+			<td>7014</td>
+			<td>0.08%</td>
+			<td>312</td>
+			<td>58</td>
+			<td>المجادلة</td>
+			<td>105</td>
+			<td>الفيل</td>
+			<td>47</td>
+		</tr>
+		<tr>
+			<td>0.16%</td>
+			<td>4847</td>
+			<td>0.11%</td>
+			<td>6678</td>
+			<td>0.09%</td>
+			<td>298</td>
+			<td>49</td>
+			<td>الحجرات</td>
+			<td>106</td>
+			<td>قريش</td>
+			<td>57</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>3887</td>
+			<td>0.10%</td>
+			<td>6449</td>
+			<td>0.08%</td>
+			<td>293</td>
+			<td>66</td>
+			<td>التحريم</td>
+			<td>107</td>
+			<td>الماعون</td>
+			<td>41</td>
+		</tr>
+		<tr>
+			<td>0.14%</td>
+			<td>2863</td>
+			<td>0.09%</td>
+			<td>6218</td>
+			<td>0.07%</td>
+			<td>278</td>
+			<td>64</td>
+			<td>التغابن</td>
+			<td>108</td>
+			<td>الكوثر</td>
+			<td>44</td>
+		</tr>
+		<tr>
+			<td>0.13%</td>
+			<td>2021</td>
+			<td>0.08%</td>
+			<td>6019</td>
+			<td>0.06%</td>
+			<td>270</td>
+			<td>61</td>
+			<td>الصف</td>
+			<td>109</td>
+			<td>الكافرون</td>
+			<td>48</td>
+		</tr>
+		<tr>
+			<td>0.12%</td>
+			<td>1349</td>
+			<td>0.07%</td>
+			<td>5861</td>
+			<td>0.05%</td>
+			<td>262</td>
+			<td>62</td>
+			<td>الجمعة</td>
+			<td>110</td>
+			<td>النصر</td>
+			<td>48</td>
+		</tr>
+		<tr>
+			<td>0.15%</td>
+			<td>1058</td>
+			<td>0.10%</td>
+			<td>5324</td>
+			<td>0.08%</td>
+			<td>238</td>
+			<td>48</td>
+			<td>الفتح</td>
+			<td>111</td>
+			<td>المسد</td>
+			<td>63</td>
+		</tr>
+		<tr>
+			<td>0.19%</td>
+			<td>12903</td>
+			<td>0.14%</td>
+			<td>2502</td>
+			<td>0.12%</td>
+			<td>122</td>
+			<td>5</td>
+			<td>المائدة</td>
+			<td>112</td>
+			<td>الإخلاص</td>
+			<td>107</td>
+		</tr>
+		<tr>
+			<td>0.20%</td>
+			<td>23702</td>
+			<td>0.15%</td>
+			<td>23</td>
+			<td>0.13%</td>
+			<td>2</td>
+			<td>9</td>
+			<td>التوبة</td>
+			<td>113</td>
+			<td>الفلق</td>
+			<td>104</td>
+		</tr>
+		<tr>
+			<td>0.11%</td>
+			<td>23702</td>
+			<td>0.06%</td>
+			<td>24</td>
+			<td>0.04%</td>
+			<td>1</td>
+			<td>110</td>
+			<td>النصر</td>
+			<td>114</td>
+			<td>الناس</td>
+			<td>4</td>
+		</tr>
+                <!-- Add more rows here -->
+            </tbody>
+        </table>
+    </div>
+</body>
+<!-- إضافة قسم للرسم البياني -->
+<div class="chart-container">
+    <canvas id="dataChart"></canvas>
+</div>
+
+<!-- إضافة مكتبة Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// استخراج البيانات من الجدول
+const table = document.getElementById('professional-table');
+const rows = Array.from(table.getElementsByTagName('tr')).slice(1); // تجاهل صف العنوان
+
+const chartData = {
+    labels: [], // أسماء السور
+    lettersPercentage: [], // النسب المئوية للحروف
+    wordsPercentage: [], // النسب المئوية للكلمات
+    versesPercentage: [], // النسب المئوية للآيات
+    orderDifference: [] // فرق الترتيب
+};
+
+rows.forEach(row => {
+    const cells = row.getElementsByTagName('td');
+    if(cells.length > 0) {
+        chartData.labels.push(cells[7].textContent + ' - ' + cells[9].textContent);
+        chartData.lettersPercentage.push(parseFloat(cells[0].textContent));
+        chartData.wordsPercentage.push(parseFloat(cells[2].textContent));
+        chartData.versesPercentage.push(parseFloat(cells[4].textContent));
+        chartData.orderDifference.push(parseInt(cells[10].textContent));
+    }
+});
+
+// إنشاء الرسم البياني
+const ctx = document.getElementById('dataChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: chartData.labels,
+        datasets: [
+            {
+                label: 'نسبة الحروف',
+                data: chartData.lettersPercentage,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1,
+                yAxisID: 'y'
+            },
+            {
+                label: 'نسبة الكلمات',
+                data: chartData.wordsPercentage,
+                borderColor: 'rgb(255, 99, 132)',
+                tension: 0.1,
+                yAxisID: 'y'
+            },
+            {
+                label: 'نسبة الآيات',
+                data: chartData.versesPercentage,
+                borderColor: 'rgb(54, 162, 235)',
+                tension: 0.1,
+                yAxisID: 'y'
+            },
+            {
+                label: 'فرق الترتيب',
+                data: chartData.orderDifference,
+                type: 'bar',
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgb(153, 102, 255)',
+                yAxisID: 'y1'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        stacked: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'تحليل النسب والفروق بين السور',
+                font: {
+                    size: 16
+                }
+            },
+            tooltip: {
+                rtl: true,
+                textDirection: 'rtl'
+            }
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: {
+                    display: true,
+                    text: 'النسب المئوية'
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: {
+                    display: true,
+                    text: 'فرق الترتيب'
+                },
+                grid: {
+                    drawOnChartArea: false
+                }
+            }
+        }
+    }
+});
+</script>
+
+<style>
+</style>
+</html>

@@ -1,0 +1,74 @@
+{
+  "title": "Al-Furqan & Relativity & Seven Mathani",
+  "language-buttons": [
+    {
+      "lang-icon": "🌙",
+      "lang-text": "العربية",
+      "lang-code": "Arabic"
+    },
+    {
+      "lang-icon": "🗼",
+      "lang-text": "Français",
+      "lang-code": "French"
+    },
+    {
+      "lang-icon": "🌎",
+      "lang-text": "English",
+      "lang-code": "English"
+    }
+  ],
+  "relative-content": {
+    "title": "Relativity",
+    "items": [
+      {
+        "text": "Relativity Sites"
+      }
+    ]
+  },
+  "furqan-content": {
+    "title": "Furqan Websites",
+    "items": [
+      {
+        "text": "Furqan Al-Huda - (1)"
+      },
+      {
+        "text": "Furqan Al-Huda - (2)"
+      },
+      {
+        "text": "Furqan Al-Huda - (3)"
+      },
+      {
+        "text": "Furqan Al-Huda - (4)"
+      },
+      {
+        "text": "Furqan Al-Huda - (5)"
+      },
+      {
+        "text": "Furqan Al-Huda - (6)"
+      }
+    ]
+  },
+  "tables-content": {
+    "title": "Tables",
+    "items": [
+      {
+        "text": "Differences in Verses, Letters, and Words"
+      },
+      {
+        "text": "Cumulative Ratio Differences: Verses, Letters, Words"
+      },
+      {
+        "text": "Cumulative Index Table of the Holy Quran"
+      },
+      {
+        "text": "Cumulative Revelation Table of the Holy Quran"
+      },
+      {
+        "text": "Differences in Numbers and Ratios of Verses, Letters, Words"
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "Copyright &copy; <span class=\"year\"><script>document.write(new Date().getFullYear())</script></span> Furqan Al-Huda. All rights reserved."
+  }
+}

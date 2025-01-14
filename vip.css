@@ -1,0 +1,141 @@
+/* تحسين الأزرار */
+.branch {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    animation: fadeInUp 0.8s ease;
+    flex: 1 1 calc(25% - 20px);
+    min-width: 250px;
+    position: relative; /* لتطبيق تأثيرات */
+}
+
+.branch:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 0 12px 40px 0 rgba(76, 175, 80, 0.25);
+}
+/* تحسين الأزرار */
+.branch {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    animation: fadeInUp 0.8s ease;
+    flex: 1 1 calc(25% - 20px);
+    min-width: 250px;
+    position: relative;
+    text-align: center; /* محاذاة النص في المنتصف */
+   
+}
+
+/* تحسين تأثيرات الأنيميشن عند التحميل */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تحسين الأزرار داخل المحتوى */
+.nesbiate,
+.furqan-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+.nesbiate a,
+.furqan-link {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ 
+
+}
+
+.nesbiate a:hover,
+.furqan-link:hover {
+    background: #45a049;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* تحسين الظل */
+}
+
+/* تحسين أزرار تغيير اللغة */
+.lang-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.lang-btn:hover {
+    background: #45a049;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* تحسين الظل */
+}
+
+/* تنسيق الـ footer */
+.footer {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-out; /* تأثير دخول */
+}
+
+/* تحسين تأثيرات الأزرار الاجتماعية */
+.social-media a {
+    display: inline-block;
+    margin: 0 15px;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.social-media a:hover {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+/* أيقونات بألوانها الأصلية */
+.fa-skype {
+    color: #00AFF0;
+    transition: color 0.3s ease;
+}
+
+.fa-youtube {
+    color: #FF0000;
+    transition: color 0.3s ease;
+}
+
+.fa-discord {
+    color: #5865F2;
+    transition: color 0.3s ease;
+}

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول التنزيل التراكمي للقرآن الكريم</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Traditional Arabic', Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            padding: 25px;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e3f2fd;
+        }
+
+        th {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            font-weight: bold;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+
+        .surah-name {
+            font-weight: bold;
+            color: #1565c0;
+        }
+
+        .opening {
+            color: #6a1b9a;
+            font-style: italic;
+        }
+
+        .percentage {
+            color: #2e7d32;
+            font-weight: 500;
+        }
+
+        .cumulative {
+            color: #0277bd;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            body {
+                padding: 0;
+            }
+        }
+
+        
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+     <!--  svg home -->
+   
+     <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+    <div class="container">
+        <div class="header">جدول التنزيل التراكمي للقرآن الكريم</div>
+        <div class="table-container">
+            <table id="quranTable">
+                <thead>
+                    <tr>
+                        <th>السورة</th>
+                        <th>فاتحة السورة</th>
+                        <th>ترتيب النزول</th>
+                        <th>الآيات</th>
+                        <th>تراكم الآيات</th>
+                        <th>الكلمات</th>
+                        <th>تراكم الكلمات</th>
+                        <th>الحروف</th>
+                        <th>تراكم الحروف</th>
+                        <th>النسبة التراكمية للآيات %</th>
+                        <th>النسبة التراكمية للكلمات %</th>
+                        <th>النسبة التراكمية للحروف %</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        
+          // svg home
+          const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+        const quranData = [
+            { surah: "العلق", opening: "بسم الله الرحمن الرحيم", order: 96, ayat: 19, words: 72, letters: 281 },
+            { surah: "القلم", opening: "ن", order: 68, ayat: 52, words: 301, letters: 1258 },
+            { surah: "المزمل", opening: "", order: 73, ayat: 20, words: 200, letters: 840 },
+            { surah: "المدثر", opening: "", order: 74, ayat: 56, words: 256, letters: 1015 },
+            { surah: "الفاتحة", opening: "بسم الله الرحمن الرحيم", order: 1, ayat: 7, words: 29, letters: 139 },
+            { surah: "المسد", opening: "", order: 111, ayat: 5, words: 23, letters: 77 },
+            { surah: "التكوير", opening: "", order: 81, ayat: 29, words: 104, letters: 425 },
+            { surah: "الأعلى", opening: "", order: 87, ayat: 19, words: 72, letters: 287 },
+            { surah: "الليل", opening: "", order: 92, ayat: 21, words: 71, letters: 312 },
+            { surah: "الفجر", opening: "", order: 89, ayat: 30, words: 139, letters: 573 },
+            { surah: "الضحى", opening: "", order: 93, ayat: 11, words: 40, letters: 164 },
+            { surah: "الشرح", opening: "", order: 94, ayat: 8, words: 27, letters: 102 },
+            { surah: "العصر", opening: "", order: 103, ayat: 3, words: 14, letters: 70 },
+            { surah: "العاديات", opening: "", order: 100, ayat: 11, words: 40, letters: 164 },
+            { surah: "الزلزلة", opening: "", order: 108, ayat: 3, words: 10, letters: 42 },
+            { surah: "القارعة", opening: "", order: 102, ayat: 7, words: 28, letters: 122 },
+            { surah: "المؤمنون", opening: "", order: 107, ayat: 7, words: 25, letters: 112 },
+            { surah: "العنكبوت", opening: "", order: 109, ayat: 6, words: 27, letters: 95 },
+            { surah: "الفيل", opening: "", order: 105, ayat: 5, words: 23, letters: 96 },
+            { surah: "الفلق", opening: "", order: 113, ayat: 5, words: 23, letters: 71 },
+            { surah: "الناس", opening: "", order: 114, ayat: 6, words: 20, letters: 80 },
+            { surah: "الإخلاص", opening: "", order: 112, ayat: 4, words: 15, letters: 47 },
+            { surah: "النجم", opening: "", order: 53, ayat: 62, words: 359, letters: 1405 },
+            { surah: "عبس", opening: "", order: 80, ayat: 42, words: 133, letters: 533 },
+            { surah: "القدر", opening: "", order: 97, ayat: 5, words: 30, letters: 112 },
+            { surah: "الشمس", opening: "", order: 91, ayat: 15, words: 54, letters: 249 },    
+            { surah: "البروج", opening: "  ", order: 85, ayat: 22, words: 109, letters: 438 },
+            { surah: "التين", opening: " ", order: 95, ayat: 8, words: 34, letters: 150 },
+            { surah: "قريش", opening: " ", order: 106, ayat: 4, words: 17, letters: 73 },
+            { surah: "القارعة", opening: "", order: 101, ayat: 11, words: 36, letters: 153 },
+            { surah: "القيامة", opening: "   ", order: 75, ayat: 40, words: 164, letters: 664 },
+            { surah: "الهمزة", opening: "   ", order: 104, ayat: 9, words: 33, letters: 133 },
+            { surah: "المرسلات", opening: " ", order: 77, ayat: 50, words: 181, letters: 817 },
+            { surah: "ق", opening: "ق  ", order: 50, ayat: 45, words: 373, letters: 1473 },
+            { surah: "البلد", opening: "   ", order: 90, ayat: 20, words: 82, letters: 335 },
+            { surah: "الطارق", opening: " ", order: 86, ayat: 17, words: 61, letters: 249 },
+            { surah: "القمر", opening: " ", order: 54, ayat: 55, words: 342, letters: 1430 },
+            { surah: "ص", opening: "ص   ", order: 38, ayat: 88, words: 733, letters: 2991 },
+            { surah: "الأعراف", opening: "المص", order: 7, ayat: 206, words: 3341, letters: 14071 },
+            { surah: "الجن", opening: "  ", order: 72, ayat: 28, words: 285, letters: 1089 },
+            { surah: "يس", opening: "يس", order: 36, ayat: 83, words: 729, letters: 2988 },
+            { surah: "الفرقان", opening: " ", order: 25, ayat: 77, words: 896, letters: 3786 },
+            { surah: "فاطر", opening: "   ", order: 35, ayat: 45, words: 780, letters: 3159 },
+            { surah: "مريم", opening: "كهيعص", order: 19, ayat: 98, words: 972, letters: 3824 },
+            { surah: "طه", opening: "طه", order: 20, ayat: 135, words: 1354, letters: 5288 },
+            { surah: "الواقعة", opening: "  ", order: 56, ayat: 96, words: 379, letters: 1692 },
+            { surah: "الشعراء", opening: "طسم", order: 26, ayat: 227, words: 1322, letters: 5517 },
+            { surah: "النمل", opening: "طس", order: 27, ayat: 93, words: 1165, letters: 4679 },
+            { surah: "القصص", opening: "طسم", order: 28, ayat: 88, words: 1441, letters: 5793 },
+            { surah: "الإسراء", opening: "  ", order: 17, ayat: 111, words: 1533, letters: 6460 },
+            { surah: "يونس", opening: "الر", order: 10, ayat: 109, words: 1833, letters: 7425 },
+            { surah: "هود", opening: "الر", order: 11, ayat: 123, words: 1947, letters: 7633 },
+            { surah: "يوسف", opening: "الر", order: 12, ayat: 111, words: 1795, letters: 7176 },
+            { surah: "الحجر", opening: "الر", order: 15, ayat: 99, words: 654, letters: 2797 },
+            { surah: "الأنعام", opening: " ", order: 6, ayat: 165, words: 3055, letters: 12418 },
+            { surah: "الصافات", opening: " ", order: 37, ayat: 182, words: 865, letters: 3790 },
+            { surah: "لقمان", opening: "الم", order: 31, ayat: 34, words: 548, letters: 2110 },
+            { surah: "سبأ", opening: " ", order: 34, ayat: 54, words: 884, letters: 3517 },
+            { surah: "الزمر", opening: " ", order: 39, ayat: 75, words: 1177, letters: 4735 },
+            { surah: "غافر", opening: "حم", order: 40, ayat: 85, words: 1228, letters: 4919 },
+            { surah: "فصلت", opening: "حم", order: 41, ayat: 54, words: 794, letters: 3159 },
+            { surah: "الشورى", opening: "حم", order: 42, ayat: 53, words: 860, letters: 3431 },
+            { surah: "الزخرف", opening: "حم", order: 43, ayat: 89, words: 842, letters: 3431 },
+            { surah: "الدخان", opening: "حم", order: 44, ayat: 59, words: 346, letters: 1439 },
+            { surah: "الجاثية", opening: "حم", order: 45, ayat: 37, words: 488, letters: 1947 },
+            { surah: "الأحقاف", opening: "حم", order: 46, ayat: 35, words: 646, letters: 2583 },
+            { surah: "الذاريات", opening: " ", order: 51, ayat: 60, words: 360, letters: 1510 },
+            { surah: "الغاشية", opening: "   ", order: 88, ayat: 26, words: 92, letters: 405 },
+            { surah: "الكهف", opening: " ", order: 18, ayat: 110, words: 1583, letters: 6360 },
+            { surah: "النحل", opening: "  ", order: 16, ayat: 128, words: 1841, letters: 7642 },
+            { surah: "نوح", opening: "  ", order: 71, ayat: 28, words: 227, letters: 950 },
+            { surah: "إبراهيم", opening: "الر", order: 14, ayat: 52, words: 831, letters: 3434 },
+            { surah: "الأنبياء", opening: " ", order: 21, ayat: 112, words: 1174, letters: 4813 },
+            { surah: "المؤمنون", opening: "  ", order: 23, ayat: 118, words: 1050, letters: 4802 },
+            { surah: "السجدة", opening: "الم", order: 32, ayat: 30, words: 372, letters: 1523 },
+            { surah: "الطور", opening: "", order: 52, ayat: 49, words: 312, letters: 1293 },
+            { surah: "الملك", opening: "  ", order: 67, ayat: 30, words: 377, letters: 1313 },
+            { surah: "الحاقة", opening: "", order: 69, ayat: 52, words: 260, letters: 1107 },
+            { surah: "المعارج", opening: " ", order: 70, ayat: 44, words: 217, letters: 947 },
+            { surah: "النبأ", opening: " ", order: 78, ayat: 40, words: 174, letters: 766 },
+            { surah: "النازعات", opening: " ", order: 79, ayat: 46, words: 179, letters: 780 },
+            { surah: "الانفطار", opening: "  ", order: 82, ayat: 19, words: 81, letters: 327 },
+            { surah: "الإنشقاق", opening: "  ", order: 84, ayat: 25, words: 108, letters: 441 },
+            { surah: "الروم", opening: "الم", order: 30, ayat: 60, words: 817, letters: 3388 },
+            { surah: "العنكبوت", opening: "الم", order: 29, ayat: 69, words: 980, letters: 3835 },
+            { surah: "المطففين", opening: " ", order: 83, ayat: 36, words: 169, letters: 740 },
+            { surah: "البقرة", opening: "الم", order: 2, ayat: 286, words: 6144, letters: 25500 },
+            { surah: "الأنفال", opening: "  ", order: 8, ayat: 75, words: 1234, letters: 5294 },
+            { surah: "آل عمران", opening: "الم", order: 3, ayat: 200, words: 3503, letters: 14605 },
+            { surah: "الأحزاب", opening: "  ", order: 33, ayat: 73, words: 1288, letters: 5617 },
+            { surah: "الممتحنة", opening: "   ", order: 60, ayat: 13, words: 352, letters: 1519 },
+            { surah: "النساء", opening: "  ", order: 4, ayat: 176, words: 3745, letters: 16030 },
+            { surah: "الزلزلة", opening: "  ", order: 99, ayat: 8, words: 36, letters: 149 },
+            { surah: "الحديد", opening: " ", order: 57, ayat: 29, words: 575, letters: 2475 },
+            { surah: "محمد", opening: " ", order: 47, ayat: 38, words: 542, letters: 2360 },
+            { surah: "الرعد", opening: "المر", order: 13, ayat: 43, words: 854, letters: 3450 },
+            { surah: "الرحمن", opening: "", order: 55, ayat: 78, words: 351, letters: 1585 },
+            { surah: "الإنسان", opening: "   ", order: 76, ayat: 31, words: 243, letters: 1132 },
+            { surah: "الطلاق", opening: "  ", order: 65, ayat: 12, words: 279, letters: 1170 },
+            { surah: "البينة", opening: "   ", order: 98, ayat: 8, words: 94, letters: 405 },
+            { surah: "الحشر", opening: " ", order: 59, ayat: 24, words: 447, letters: 1913 },
+            { surah: "النور", opening: " ", order: 24, ayat: 64, words: 1316, letters: 5660 },
+            { surah: "الحج", opening: "  ", order: 22, ayat: 78, words: 1279, letters: 5735 },
+            { surah: "المنافقون", opening: "  ", order: 63, ayat: 11, words: 180, letters: 780 },
+            { surah: "المجادلة", opening: "  ", order: 58, ayat: 22, words: 475, letters: 1991 },
+            { surah: "الحجرات", opening: "   ", order: 49, ayat: 18, words: 353, letters: 1476 },
+            { surah: "التحريم", opening: "  ", order: 66, ayat: 12, words: 254, letters: 1067 },
+            { surah: "التغابن", opening: " ", order: 64, ayat: 18, words: 241, letters: 1066 },
+            { surah: "الصف", opening: " ", order: 61, ayat: 14, words: 226, letters: 936 },
+            { surah: "الجمعة", opening: " ", order: 62, ayat: 11, words: 177, letters: 749 },
+            { surah: "الفتح", opening: " ", order: 48, ayat: 29, words: 560, letters: 2484 },
+            { surah: "المائدة", opening: "   ", order: 5, ayat: 120, words: 2837, letters: 11892 },
+            { surah: "التوبة", opening: "", order: 9, ayat: 129, words: 2502, letters: 10873 },
+            { surah: "النصر", opening: "   ", order: 110, ayat: 3, words: 19, letters: 79 }
+        ];
+
+        function calculateCumulativeTotals() {
+            let cumAyat = 0;
+            let cumWords = 0;
+            let cumLetters = 0;
+            const TOTAL_AYAT = 6236;
+            const TOTAL_WORDS = 77439;
+            const TOTAL_LETTERS = 323671;
+
+            return quranData.map(surah => {
+                cumAyat += surah.ayat;
+                cumWords += surah.words;
+                cumLetters += surah.letters;
+
+                return {
+                    ...surah,
+                    cumAyat,
+                    cumWords,
+                    cumLetters,
+                    cumAyatPercent: ((cumAyat / TOTAL_AYAT) * 100).toFixed(2),
+                    cumWordsPercent: ((cumWords / TOTAL_WORDS) * 100).toFixed(2),
+                    cumLettersPercent: ((cumLetters / TOTAL_LETTERS) * 100).toFixed(2)
+                };
+            });
+        }
+
+        function populateTable() {
+            const tableBody = document.getElementById('tableBody');
+            const dataWithTotals = calculateCumulativeTotals();
+
+            dataWithTotals.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="surah-name">${row.surah}</td>
+                    <td class="opening">${row.opening || '-'}</td>
+                    <td>${row.order}</td>
+                    <td>${row.ayat}</td>
+                    <td class="cumulative">${row.cumAyat}</td>
+                    <td>${row.words}</td>
+                    <td class="cumulative">${row.cumWords}</td>
+                    <td>${row.letters}</td>
+                    <td class="cumulative">${row.cumLetters}</td>
+                    <td class="percentage">${row.cumAyatPercent}%</td>
+                    <td class="percentage">${row.cumWordsPercent}%</td>
+                    <td class="percentage">${row.cumLettersPercent}%</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', populateTable);
+    </script>
+</body>
+</html>

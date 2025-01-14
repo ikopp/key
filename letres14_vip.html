@@ -1,0 +1,1242 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> كتاب علييين-المرقوم   </title>
+    <style>
+        body {
+            margin: 0;
+           
+            background-color: black;
+            color: #000000;
+            font-family: Arial, sans-serif;
+        }
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+       
+     
+      
+        /* after matrix css */
+        #inputText {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.705);
+            color: #e6f7ff;
+        }
+                #arabicInput {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.705);
+            color: #e6f7ff;
+        }
+        
+        #output {
+ 
+  padding: 10px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+    font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word; /* Optional for older browsers */
+}
+
+
+
+        .input-line, .output-line, .counters {
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+        .input-line {
+            background-color: #e6f7ff;
+        }
+        .output-line {
+            background-color: #f0fff0;
+        }
+        .counters {
+            /* background-color: #fff0e6; */
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+        .highlight {
+            position: relative;
+            color: red;
+            font-weight: bold;
+        }
+        .number {
+            position: absolute;
+            top: -0.7em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.5em;
+            font-weight: normal;
+            color: blue;
+        }
+        .large-number {
+            font-size: 0.35em;
+            color: violet;
+        }
+        .comma {
+            color: gold;
+            font-weight: bold;
+        }
+        button {
+            padding: 5px;
+            background-color: rgb(3, 197, 13);;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid bisque;
+        }
+        button:hover {
+            background-color: #e6f0e7;
+            color: rgb(3, 197, 13);
+            border: 1px solid rgb(17, 10, 1);
+
+        }
+        /* css table */
+        table{
+    width: 100%;
+    direction: rtl;
+    text-align: center;
+    font-weight: bold;
+}
+
+.pl{
+    background: #eb0e0e;
+    color: black;
+}
+thead{
+    background: black;
+    color: aliceblue;
+}
+tbody{
+    background: rgb(3, 197, 13);
+    color: rgb(7, 9, 10);
+}
+/* css table1 */
+
+#table1{
+        width: 30%;
+        font-weight: bold;
+       direction: ltr;
+     
+    
+    }
+
+    .fred{
+        background-color: aqua;
+        color: black;
+    }
+    .one{
+        background: #f1c40f;
+        color: rgba(0, 0, 0, 0.699);
+        margin: 2px;
+
+    }
+    .two{
+        background: rgb(9, 250, 102);
+        color: rgb(2, 7, 10);
+    }
+    .span1{
+            background-color:#f1c40f;
+            padding: 5px;
+            font-size: x-large;
+        }
+        .span2{
+            background-color: rgb(223, 15, 32);
+            padding: 5px;
+            font-size: x-large;
+            justify-content: center;
+        }
+        .centre{
+            justify-content: center;
+            text-align: center;
+            
+        }
+        /* متجاوب مع جميع الأنظمة */
+        @media screen and (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .content {
+        padding: 10px;
+    }
+    
+    #inputText {
+        height: 80px;
+    }
+    
+    .counters {
+        width: 100%;
+    }
+    
+    #table1 {
+        width: 100%;
+        direction: rtl;
+    }
+    
+    .span1, .span2 {
+        font-size: large;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+    
+    #inputText {
+        height: 60px;
+    }
+    
+    .span1, .span2 {
+        font-size: medium;
+    }
+}
+
+/* تحسينات عامة للتجاوب */
+body {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#inputText, #output {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table {
+    overflow-x: auto;
+    display: block;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* تحسين التجاوب للكانفاس */
+#matrix-canvas {
+    width: 100vw;
+    height: 100vh;
+}
+.x{
+    color: red;
+
+}
+/* last table counters */
+#table-7 {
+            width: 100%;
+            max-width: 600px;
+            /* background-color: #ffffff; */
+            color: #333333;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            direction: rtl;
+            justify-content: center;
+            justify-items: center;
+
+        }
+        #table-7 th, #table-7 td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        #table-7 thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #table-7 thead th {
+            font-weight: bold;
+        }
+        #table-7 tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        #table-7 tbody tr:hover {
+            background-color: #f0fff0;
+        }
+        @media (max-width: 600px) {
+            #table-7 {
+                font-size: 14px;
+            }
+            #table-7 th, #table-7 td {
+                padding: 8px;
+            }
+        }
+        /* svg home */
+        
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+            direction: ltr;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- svg home -->
+     
+    <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+<!-- End svg home -->
+    <canvas id="matrix-canvas"></canvas>
+    <div class="content">
+        <p style="text-align:center">
+            <span style="color:#9b59b6; font-size:22px; background-color:#f1c40f">&nbsp;</span>
+            <span style="color:#2c3e50; font-size:22px; background-color:#f1c40f">عروج فكري روحي</span>
+            <span style="color:#9b59b6; font-size:22px; background-color:#f1c40f">&nbsp;</span>
+        </p>
+        
+
+        <table id="table1">
+            <thead>
+                <tr>
+                   
+                    <th class="two">1 </th>
+                    <th class="one">2 </th> 
+                    <th class="two">17 </th>
+                    <th class="one">7 </th>
+                    <th class="two">5 </th>
+                    <th class="one">4 </th> 
+                    <th class="two">3 </th>
+                    <th class="one">2 </th>
+                    <th class="two">2 </th>
+                    <th class="one">2 </th> 
+                    <th class="two">1 </th>
+                    <th class="one">6 </th>
+                    <th class="two">13 </th>
+                    <th class="one">13 </th>
+                    <th class="fred">عدد تكرارها</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                   
+                    <th class="two">ن</th>
+                    <th class="one">ق</th>
+                    <th class="two">م</th>
+                    <th class="one">ح</th>
+                    <th class="two">س</th>
+                    <th class="one">ط</th>
+                    <th class="two">ص</th>
+                    <th class="one">ع</th>
+                    <th class="two">ي</th>
+                    <th class="one">ه</th>
+                    <th class="two">ك</th>
+                    <th class="one">ر</th>
+                    <th class="two">ل</th>
+                    <th class="one">أ</th>
+                    <th class="fred">حروف الفرقان</th>
+                </tr>
+               
+            </tbody>
+        </table>
+        <textarea name="text" id="inputText"  oninput="analyzeText()" required></textarea>
+    
+        <button onclick="printResult()">طباعة النتائج</button>
+        <div id="output"></div>
+        <h1>قارئ الفرقان</h1>
+    <label for="arabicInput">Enter:</label>
+    <input type="text" id="arabicInput" placeholder="ادخل الفرقان< هنا">
+	<button onclick="generateAudio('Audio Aziz')">الاستماع بصوت عزيز</button>
+    <button onclick="generateAudio('Audio Zakarya')">الاستماع بصوت زكريا</button>
+	<br><br>
+	<audio id="audioPlayer" controls></audio>
+    <br><br>
+    <p id="status"></p>
+    <audio id="audioPlayer" controls style="display:none;"></audio> <!-- Audio player -->
+
+        <div class="centre"><span class="span1"> الحروف النورانية: (14) </span></div>
+        <br>
+        <div class="centre"><span class="span2">المفتاح : ألمر ألم ن  ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر ألمص حم يس ألم ألر حم كهيعص ق حم ص </span></div>
+       <br>
+        <div>
+<!-- 
+        <table dir="rtl">
+          
+            <tbody>
+                <tr>
+                    <td>الفاتحة</td>
+                    <td>العلق</td>
+                    <td>الرعد &nbsp;<span class="highlight">( أل ر ك ه ي ع ص ط س ح م ق ن )</span>&nbsp;</td>
+                    <td>العصر</td>
+                    <td>الحج</td>
+                    <td>الإخلاص </td>
+                    <td>المائدة</td>
+    
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+
+    <script>
+        // svg home
+        
+        const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+        
+        // End svg home
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const arabic = 'طعمانصلكهيسرحق';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = arabic.charAt(Math.floor(Math.random() * arabic.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(draw, 30);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        // furquan el hoda content javasript
+        
+        const highlightChars = {
+            'ا': '13', 'أ': '13', 'إ': '13', 'ئ': '13','ؤ': '13', 'ء': '13', 'ى': '13', 'آ': '13',
+            'ل': '13',
+            'م': '17',
+            'ر': '6',
+            'ك': '1',
+            'ه': '2',
+            'ي': '2',
+            'ع': '2',
+            'ص': '3',
+            'ط': '4',
+            'س': '5',
+            'ح': '7',
+            'م': '17',
+            'ق': '2',
+            'ن': '1'
+        };
+        const highlightChars1 = ['ا', 'أ', 'إ', 'ئ','ؤ', 'ء', 'ى', 'آ', 'ل', 'م', 'ر', 'ك', 'ه', 'ي', 'ع', 'ص', 'ط', 'س', 'ح', 'ق', 'ن'];
+        function highlightText(text) {
+            return text.split('').map(char => {
+                if (char in highlightChars) {
+                    const number = highlightChars[char];
+                    const numberClass = parseInt(number) > 9 ? 'number large-number' : 'number';
+                    return `<span class="highlight">${char}<span class="${numberClass}">${number}</span></span>`;
+                  
+                }
+                return char;
+            }).join('');
+        }
+
+        // script placeholder
+        
+        const runInput = document.querySelector('#inputText');
+        const line = '   أدخل النص القرآني هنا ......';
+        const speed = 100;
+        let i = 0;
+        let done;
+
+        function run_line() {
+            if (i++ < line.length) {
+                runInput.value = line.substring(0, i);
+            } else {
+                runInput.value = " ";
+                i = 0;
+            }
+            done = setTimeout(run_line, speed);
+        }
+        run_line();
+
+        const inputText = document.getElementById('inputText');
+        const customAttr = inputText.getAttribute('placeholder');
+
+        inputText.addEventListener('focus', function () {
+            clearTimeout(done);
+            this.value = '';
+            if (this.hasAttribute('placeholder')) {
+                this.removeAttribute('placeholder');
+            }
+        });
+
+        inputText.addEventListener('blur', function () {
+            this.setAttribute('placeholder', customAttr);
+        });
+
+        //end script place holder
+        
+        function highlightText1(text) {
+            return text.split('').map(char => 
+                highlightChars1.includes(char) ? `<span class="highlight">${char}</span>` : char
+            ).join('');
+        }
+
+
+
+
+
+
+        
+
+        function analyzeText() {
+            const inputText = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `<p><span style="font-size:24px; background-color:#f1c40f; color:#2c3e50">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ألمر ألم ن  ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر ألمص حم يس ألم ألر حم كهيعص ق حم ص&nbsp; &nbsp; &nbsp;&nbsp;</span></p>`;
+
+            const lines = inputText.split('\n');
+            let totalAnalysis = '';
+            
+            lines.forEach((line, index) => {
+                if (line.trim() !== '') {
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText1(line)}</div>`;
+
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText(line)}</div>`;
+                    const lineAnalysis = analyzeLine(line);
+                    outputDiv.innerHTML += `<div class="output-line">فرقان: ${lineAnalysis}</div>`;
+                    totalAnalysis += lineAnalysis + ' ';
+                }
+            });
+
+            const wordCount = countWords(inputText);
+            const allCharCount = countAllChars(inputText);
+            const specificCharCounts = countSpecificChars(inputText);
+
+            outputDiv.innerHTML += `<div class="counters">
+   
+    <table  id="table-7">
+        <tr >
+            <th>الحرف</th>
+            <th> قيمة الحرف</th>
+            <th> مضروب</th>
+            <th>عدد الحروف من الجملة</th>
+            <th>القيمة في عدد الحروف   </th>
+          
+          
+
+
+        </tr>
+        <tr>
+            <td>أ</td>
+            <td>13</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.alif}</td>
+                      <td >${specificCharCounts.alif * 13}</td>
+
+          
+        </tr>
+
+        <tr>
+            <td>ل</td>
+            <td>13</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.lam}</td>
+            <td >${specificCharCounts.lam *13}</td>
+           
+        
+        </tr>
+        <tr>
+            <td>ر</td>
+            <td>6</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.raa}</td>
+            <td >${specificCharCounts.raa * 6}</td>
+           
+           
+        </tr>
+
+        <tr>
+            <td>ك</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.kaf}</td>
+                       <td >${specificCharCounts.kaf * 1}</td>
+
+        
+        </tr>
+
+        
+        <tr>
+            <td>ه</td>
+            <td>2</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.hae}</td>
+                        <td >${specificCharCounts.hae * 2}</td>
+
+          
+        </tr>
+
+        <tr>
+            <td>ي</td>
+            <td>2</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.yaa}</td>
+                        <td >${specificCharCounts.yaa * 2}</td>
+
+     
+        </tr>
+
+
+        <tr>
+            <td>ع</td>
+            <td>2</td>
+            <td class = "x">*</td>
+            <td>${specificCharCounts.ine}</td>
+                       <td>${specificCharCounts.ine * 2}</td>
+
+     
+        </tr>
+
+        <tr>
+            <td>ص</td>
+            <td>3</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.sad}</td>
+                       <td >${specificCharCounts.sad * 3}</td>
+
+      
+        </tr>
+
+        <tr>
+            <td>ط</td>
+            <td>4</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.ttae}</td>
+                       <td >${specificCharCounts.ttae *4 }</td>
+
+  
+        </tr>
+
+        <tr>
+            <td>س</td>
+            <td>5</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.sine}</td>
+                        <td >${specificCharCounts.sine * 5 }</td>
+
+      
+        </tr>
+
+
+        <tr>
+            <td>ح</td>
+            <td>7</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.hhae}</td>
+                        <td >${specificCharCounts.hhae * 7}</td>
+
+          
+        </tr>
+
+        <tr>
+            <td>م</td>
+            <td>17</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.meem}</td>
+                       <td >${specificCharCounts.meem * 17}</td>
+
+          
+        </tr>
+
+        <tr>
+            <td>ق</td>
+            <td>2</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.paf}</td>
+                        <td >${specificCharCounts.paf * 2}</td>
+
+       
+        </tr>
+        
+    
+
+        <tr>
+            <td>ن</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td >${specificCharCounts.noon}</td>
+                        <td >${specificCharCounts.noon * 1}</td>
+
+       
+        </tr>
+
+
+
+        <tr>
+            <td>د</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="dal3"></td>
+            <td id="dal53"></td>
+        </tr>
+
+
+        
+
+        <tr>
+            <td>ب</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="baa3"></td>
+            <td id="baa83"></td>
+      
+        </tr>
+
+
+
+
+        <tr>
+            <td>و</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="ouaou3"></td>
+            <td id="ouaou133"></td>
+      
+        </tr>
+
+        <tr>
+            <td>ت</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="taa3"></td>
+            <td id="taa153"></td>
+     
+        </tr>
+
+
+
+
+        <tr>
+            <td>ذ</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="ddal3"></td>
+            <td id="ddal193"></td>
+       
+        </tr>
+
+
+        <tr>
+            <td>غ</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="gaa3"></td>
+            <td id="gaa203"></td>
+     
+        </tr>
+
+        <tr>
+            <td>ض</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="daa3"></td>
+            <td id="daa213"></td>
+       
+        </tr>
+
+
+        <tr>
+            <td>ف</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="faa3"></td>
+            <td id="faa223"></td>
+       
+        </tr>
+
+        <tr>
+            <td>ز</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="zay3"></td>
+            <td id="zay233"></td>
+      
+        </tr>
+
+        <tr>
+            <td>خ</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="kha3"></td>
+            <td id="kha243"></td>
+    
+        </tr>
+
+        <tr>
+            <td>ش</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="chine3"></td>
+            <td id="chine253"></td>
+     
+        </tr>
+
+
+        <tr>
+            <td>ظ</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="ddda3"></td>
+            <td id="ddda263"></td>
+      
+        </tr>
+
+
+        <tr>
+            <td>ج</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="jim3"></td>
+            <td id="jim273"></td>
+         
+        </tr>
+
+        <tr>
+            <td>ث</td>
+            <td>1</td>
+            <td class = "x">*</td>
+            <td id="ttta3"></td>
+            <td id="ttta283"></td>
+       
+        </tr>
+
+        <tr>
+            <td colspan="3">مجاميع </td>
+            <td >${allCharCount}</td>
+            <td >${specificCharCounts.alif * 13 + specificCharCounts.lam *13 + specificCharCounts.raa * 6 + specificCharCounts.kaf * 1 + specificCharCounts.hae * 2 + specificCharCounts.yaa * 2 + specificCharCounts.ine * 2  + specificCharCounts.sad * 3 + specificCharCounts.ttae *4  + specificCharCounts.sine * 5 + specificCharCounts.hhae * 7 + specificCharCounts.meem * 17 + specificCharCounts.paf * 2 +  specificCharCounts.noon * 1}</td>
+            
+        </tr>
+        <tr>
+            <td colspan="5">************************</td>
+        </tr>
+
+        <tr>
+            <td colspan="3">عدد الكلمات</td>
+            <td colspan="2">${wordCount}</td>
+            
+        </tr>
+        <tr>
+            <td colspan="3">عدد جميع الحروف  </td>
+            <td colspan="2">${allCharCount}</td>
+            
+        </tr>
+        <tr>
+            <td colspan="3"> مجموع الحروف النورانية</td>
+            <td colspan="2">${specificCharCounts.total}</td>
+            
+        </tr>
+         <tr>
+            <td colspan="3"> مجموع الحروف النورانية * قوّتها  </td>
+                       <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam *13 + specificCharCounts.raa * 6 + specificCharCounts.kaf * 1 + specificCharCounts.hae * 2 + specificCharCounts.yaa * 2 + specificCharCounts.ine * 2  + specificCharCounts.sad * 3 + specificCharCounts.ttae *4  + specificCharCounts.sine * 5 + specificCharCounts.hhae * 7 + specificCharCounts.meem * 17 + specificCharCounts.paf * 2 +  specificCharCounts.noon * 1}</td>
+
+            
+        </tr>
+        
+        <tr>
+            <td colspan="3">    مجموع الحروف الظلمانية</td>
+            <td colspan="2">${allCharCount - specificCharCounts.total }</td>
+            
+        </tr>
+          <tr>
+            <td colspan="3">    مجموع الحروف الظلمانية * قوّتها</td>
+            <td colspan="2">${allCharCount - specificCharCounts.total }</td>
+            
+        </tr>
+        
+           <tr>
+            <td colspan="3">    مجموع الحروف (ألمر)  </td>
+            <td colspan="2">${specificCharCounts.alif + specificCharCounts.lam + specificCharCounts.meem + specificCharCounts.raa}</td>
+            
+        </tr>
+           <tr>
+            <td colspan="3">    مجموع الحروف (ألمر) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam * 13 + specificCharCounts.meem *17 + specificCharCounts.raa * 6}</td>
+            
+        </tr>
+           <tr>
+            <td colspan="3">    مجموع الحروف (ألم ن)</td>
+            <td colspan="2">${specificCharCounts.alif  + specificCharCounts.lam + specificCharCounts.meem + specificCharCounts.noon}</td>
+            
+        </tr>
+    
+           <tr>
+            <td colspan="3">    مجموع الحروف (ألم ن) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam * 13 + specificCharCounts.meem * 17 + specificCharCounts.noon * 1}</td>
+            
+        </tr>
+      
+             <tr>
+            <td colspan="3">    مجموع الحروف ( ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر) </td>
+            <td colspan="2">${specificCharCounts.alif + specificCharCounts.lam + specificCharCounts.meem + specificCharCounts.hhae + specificCharCounts.ine + specificCharCounts.sine + specificCharCounts.paf + specificCharCounts.ttae + specificCharCounts.hae + specificCharCounts.raa }</td>
+            
+        </tr>
+             <tr>
+            <td colspan="3">    مجموع الحروف (ألم حم-عسق طس ألم طسم طسم حم ألر ألر حم طه ألر ألم ألم حم ألر ) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam  *13+ specificCharCounts.meem *17 + specificCharCounts.hhae *7 + specificCharCounts.ine *2 + specificCharCounts.sine * 5 + specificCharCounts.paf * 2 + specificCharCounts.ttae *4 + specificCharCounts.hae *2 + specificCharCounts.raa * 6 }</td>
+            
+        </tr>
+
+             <tr>
+                        <td colspan="3">    مجموع الحروف (ألمص حم يس ألم ) </td>
+
+            <td colspan="2">${specificCharCounts.alif + specificCharCounts.lam + specificCharCounts.meem + specificCharCounts.sad + specificCharCounts.hhae + specificCharCounts.yaa + specificCharCounts.sine }</td>
+            
+        </tr>
+             <tr>
+            <td colspan="3">    مجموع الحروف ( ألمص حم يس ألم) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam * 13+ specificCharCounts.meem * 17 + specificCharCounts.sad * 3 + specificCharCounts.hhae * 7 + specificCharCounts.yaa * 2 + specificCharCounts.sine * 5 }</td>
+            
+        </tr>
+             <tr>
+                      <td colspan="3">    مجموع الحروف ( ألر حم كهيعص ق حم) </td>
+
+            <td colspan="2">${specificCharCounts.alif + specificCharCounts.lam + specificCharCounts.raa + specificCharCounts.hhae + specificCharCounts.meem + specificCharCounts.kaf + specificCharCounts.hae + specificCharCounts.yaa + specificCharCounts.ine + specificCharCounts.sad + specificCharCounts.paf}</td>
+            
+        </tr>
+             <tr>
+            <td colspan="3">    مجموع الحروف ( ألر حم كهيعص ق حم) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.alif * 13 + specificCharCounts.lam *13 + specificCharCounts.raa * 6 + specificCharCounts.hhae * 7 + specificCharCounts.meem * 17 + specificCharCounts.kaf * 1 + specificCharCounts.hae * 2 + specificCharCounts.yaa *2 + specificCharCounts.ine * 2 + specificCharCounts.sad * 3 + specificCharCounts.paf * 2}</td>
+            
+        </tr>
+
+             <tr>
+                        <td colspan="3">    مجموع الحروف ( ص) </td>
+
+            <td colspan="2">${specificCharCounts.sad }
+</td>
+            
+        </tr>
+             <tr>
+            <td colspan="3">    مجموع الحروف ( ص) * قوّتها</td>
+            <td colspan="2">${specificCharCounts.sad * 3 }
+</td>
+            
+        </tr>
+         
+       
+        
+
+</table>
+
+            </div>`;
+        }
+
+        function analyzeLine(line) {
+            const words = line.split(' ');
+            return words.map(analyzeWord).join('<span class="comma"> ، </span>');
+        }
+
+        function analyzeWord(word) {
+            let result = '';
+            for (let char of word) {
+                if (['ا', 'ى', 'ء', 'ئ', 'ؤ', 'أ', 'إ', 'آ'].includes(char)) {
+                    result += 'أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ أَلِفْ';
+                } else if (char === 'ل') {
+                    result += 'لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ لَامْ ';
+                } else if (char === 'م') {
+                    result += 'مِيمْ  مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ مِيمْ ';
+                } else if (char === 'ر') {
+                    result += 'رَاءْ رَاءْ رَاءْ رَاءْ رَاءْ رَاءْ ';
+                }else if (char === 'ك') {
+                    result += 'كَافْ ';
+                }else if (char === 'ه') {
+                    result += 'هَاءْ هَاءْ ';
+                }else if (char === 'ي') {
+                    result += 'يَاءْ يَاءْ ';
+                }else if (char === 'ع') {
+                    result += 'عَينْ عَينْ  ';
+                }else if (char === 'ص') {
+                    result += 'صَادْ صَادْ صَادْ ';
+                }else if (char === 'ط') {
+                    result += 'طَاءْ طَاءْ طَاءْ طَاءْ ';
+                }else if (char === 'س') {
+                    result += 'سِينْ سِينْ سِينْ سِينْ سِينْ ';
+                }else if (char === 'ح') {
+                    result += 'حَاءْ حَاءْ حَاءْ حَاءْ حَاءْ حَاءْ حَاءْ ';
+                }else if (char === 'ق') {
+                    result += 'قَافْ ';
+                }else if (char === 'ن') {
+                    result += 'نُونْ ';
+                }
+            }
+            return result.trim();
+        }
+
+        function countWords(text) {
+            return text.trim().split(/\s+/).length;
+        }
+
+        function countAllChars(text) {
+            return text.replace(/\s/g, '').length;
+        }
+
+        function countSpecificChars(text) {
+            const counts = {
+                alif: 0,
+                lam: 0,
+                raa: 0,
+                kaf: 0,
+                hae: 0,
+                yaa: 0,
+                ine: 0,
+                sad: 0,
+                ttae: 0,
+                sine: 0,
+                hhae: 0,
+                meem: 0,
+                paf: 0,
+                noon: 0,
+                total: 0
+            };
+
+            for (let char of text) {
+                if (['ا', 'ى', 'ء', 'ئ', 'ؤ', 'أ', 'إ', 'آ'].includes(char)) {
+                    counts.alif++;
+                    counts.total++;
+                } else if (char === 'ل') {
+                    counts.lam++;
+                    counts.total++;
+                } else if (char === 'م') {
+                    counts.meem++;
+                    counts.total++;
+                } else if (char === 'ر') {
+                    counts.raa++;
+                    counts.total++;
+                }else if (char === 'ك') {
+                    counts.kaf++;
+                    counts.total++;
+                }else if (char === 'ه') {
+                    counts.hae++;
+                    counts.total++;
+                }else if (char === 'ي') {
+                    counts.yaa++;
+                    counts.total++;
+                }else if (char === 'ع') {
+                    counts.ine++;
+                    counts.total++;
+                }else if (char === 'ص') {
+                    counts.sad++;
+                    counts.total++;
+                }else if (char === 'ط') {
+                    counts.ttae++;
+                    counts.total++;
+                }else if (char === 'س') {
+                    counts.sine++;
+                    counts.total++;
+                }else if (char === 'ح') {
+                    counts.hhae++;
+                    counts.total++;
+                }else if (char === 'ق') {
+                    counts.paf++;
+                    counts.total++;
+                }else if (char === 'ن') {
+                    counts.noon++;
+                    counts.total++;
+                }
+            }
+
+            return counts;
+        }
+                async function generateAudio(library) {
+            const arabicInput = document.getElementById('arabicInput').value;
+
+            if (!arabicInput) {
+                alert('Please enter Arabic text.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/synthesize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ arabicInput, library })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = data.output;
+                    audioPlayer.play();
+                } else {
+                    alert(data.error || 'Error generating audio.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to generate audio.');
+            }
+        }
+		function playAudio() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.play();
+        }
+
+        function pauseAudio() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            if (!audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+        }
+
+        function printResult() {
+            const printContents = document.getElementById('output').innerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+</body>
+</html>

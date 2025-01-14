@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>إحصائيات السور القرآنية</title>
+  
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.20/babel.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      direction: rtl;
+      text-align: right;
+      font-family: 'Amiri', serif;
+      background: linear-gradient(135deg, #f6f8fa 0%, #f1f5f9 100%);
+    }
+
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .input-animation::placeholder {
+      animation: blink 1s step-start infinite;
+    }
+
+    tr:hover {
+      transition: all 0.3s ease;
+      transform: translateY(-2px);
+    }
+    
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+            direction: rtl;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+  </style>
+</head>
+<body>
+  
+    <!--  svg home -->
+   
+    <a href="./index.html" class="home-button">
+      <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span class="button-text">Home</span>
+  </a>
+  <!-- End svg home -->
+  <div id="root" ></div>
+
+  <script type="text/babel">
+    
+          // svg home
+          const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = './index.html';
+            }, 100);
+        });
+          // End svg home
+    
+    function App() {
+      const [searchTerm, setSearchTerm] = React.useState('');
+      const [isDark, setIsDark] = React.useState(false);
+      const [placeholder, setPlaceholder] = React.useState('');
+      const fullPlaceholder = ' أدخل إسم سورة للبحث،يعطيك نسبيتها ، مثال: الشورى    ';
+      const timeoutRef = React.useRef(null);
+
+      // تقسيم السور إلى 8 مجموعات
+      const surahGroups = [
+        // المجموعة الأولى
+        [
+        { name: "الفاتحة", order: 1, revelationOrder: 5, verses: 7, words: 29, letters: 139, prefix: "" },
+
+{ name: "العلق", order: 96, revelationOrder: 1, verses: 19, words: 72, letters: 285, prefix: "" },
+
+{ name: "الرعد", order: 13, revelationOrder: 96, verses: 43, words: 854, letters: 3450, prefix: "المر" },
+
+{ name: "العصر", order: 103, revelationOrder: 13, verses: 3, words: 14, letters: 68, prefix: "" },
+
+{ name: "الحج", order: 22, revelationOrder: 103, verses: 78, words: 1279, letters: 5147, prefix: "" },
+
+{ name: "الإخلاص", order: 112, revelationOrder: 22, verses: 4, words: 15, letters: 47, prefix: "" },
+
+{ name: "المائدة", order: 5, revelationOrder: 112, verses: 120, words: 2804, letters: 11892, prefix: "" }
+        ],
+        // المجموعة الثانية
+        [
+        { name: "البقرة", order: 2, revelationOrder: 87, verses: 286, words: 6144, letters: 25500, prefix: "الم" },
+
+{ name: "القلم", order: 68, revelationOrder: 2, verses: 52, words: 300, letters: 1131, prefix: "ن" },
+
+{ name: "الغاشية", order: 88, revelationOrder: 68, verses: 26, words: 92, letters: 405, prefix: "" },
+
+{ name: "الأنفال", order: 8, revelationOrder: 88, verses: 75, words: 1234, letters: 5299, prefix: "" },
+
+{ name: "الأعلى", order: 87, revelationOrder: 8, verses: 19, words: 72, letters: 287, prefix: "" } ],
+        // المجموعة الثالثة
+        [
+      
+{ name: "آل عمران", order: 3, revelationOrder: 89, verses: 200, words: 3503, letters: 14525, prefix: "الم" },
+{ name: "المزمل", order: 73, revelationOrder: 3, verses: 20, words: 200, letters: 1200, prefix: "  " },
+{ name: "الأنبياء", order: 21, revelationOrder: 73, verses: 112, words: 1502, letters: 6025, prefix: "  " },
+{ name: "الناس", order: 114, revelationOrder: 21, verses: 6, words: 20, letters: 80, prefix: "   " },
+{ name: "النصر", order: 110, revelationOrder: 114, verses: 3, words: 19, letters: 77, prefix: "   " },
+{ name: "الجمعة", order: 62, revelationOrder: 110, verses: 11, words: 177, letters: 700, prefix: " " },
+{ name: "الشورى", order: 42, revelationOrder: 62, verses: 53, words: 865, letters: 3570, prefix: " حم - عسق" },
+{ name: "الفرقان", order: 25, revelationOrder: 42, verses: 77, words: 898, letters: 3650, prefix: " " },
+{ name: "القدر", order: 97, revelationOrder: 25, verses: 5, words: 30, letters: 125, prefix: " " },
+{ name: "الرحمن", order: 55, revelationOrder: 97, verses: 78, words: 352, letters: 1600, prefix: "" },
+{ name: "الأنعام", order: 6, revelationOrder: 55, verses: 165, words: 3055, letters: 12650, prefix: " " },
+{ name: "المسد", order: 111, revelationOrder: 6, verses: 5, words: 20, letters: 90, prefix: " " },
+{ name: "الفتح", order: 48, revelationOrder: 111, verses: 29, words: 560, letters: 2250, prefix: " " },
+{ name: "النمل", order: 27, revelationOrder: 48, verses: 93, words: 1400, letters: 5550, prefix: "" },
+{ name: "البروج", order: 85, revelationOrder: 27, verses: 22, words: 272, letters: 1200, prefix: "  " },
+{ name: "العنكبوت", order: 29, revelationOrder: 85, verses: 69, words: 1000, letters: 4080, prefix: "ألم" },
+{ name: "قريش", order: 106, revelationOrder: 29, verses: 4, words: 17, letters: 70, prefix: " " },
+{ name: "الحجرات", order: 49, revelationOrder: 106, verses: 18, words: 350, letters: 1400, prefix: "  " },
+{ name: "القصص", order: 28, revelationOrder: 49, verses: 88, words: 1400, letters: 5600, prefix: "طسم" },
+{ name: "التين", order: 95, revelationOrder: 28, verses: 8, words: 35, letters: 125, prefix: "" },
+{ name: "محمد", order: 47, revelationOrder: 95, verses: 38, words: 544, letters: 2500, prefix: " " },
+{ name: "الشعراء", order: 26, revelationOrder: 47, verses: 227, words: 1490, letters: 6000, prefix: "طسم" },
+{ name: "الشمس", order: 91, revelationOrder: 26, verses: 15, words: 54, letters: 200, prefix: "" },
+{ name: "الممتحنة", order: 60, revelationOrder: 91, verses: 13, words: 189, letters: 900, prefix: "  " },
+{ name: "غافر", order: 40, revelationOrder: 60, verses: 85, words: 1220, letters: 5400, prefix: "حم" },
+{ name: "الجن", order: 72, revelationOrder: 40, verses: 28, words: 340, letters: 1400, prefix: " " },
+{ name: "إبراهيم", order: 14, revelationOrder: 72, verses: 52, words: 831, letters: 3550, prefix: "الر" },
+{ name: "العاديات", order: 100, revelationOrder: 14, verses: 11, words: 40, letters: 160, prefix: "" },
+{ name: "البينة", order: 98, revelationOrder: 100, verses: 8, words: 100, letters: 400, prefix: " " },
+{ name: "الإنسان", order: 76, revelationOrder: 98, verses: 31, words: 243, letters: 950, prefix: " " },
+{ name: "الطور", order: 52, revelationOrder: 76, verses: 49, words: 310, letters: 1300, prefix: "" },
+{ name: "هود", order: 11, revelationOrder: 52, verses: 123, words: 1940, letters: 7900, prefix: "الر" },
+{ name: "الضحى", order: 93, revelationOrder: 11, verses: 11, words: 40, letters: 160, prefix: "" },
+{ name: "الزلزلة", order: 99, revelationOrder: 93, verses: 8, words: 36, letters: 160, prefix: " " },
+{ name: "الطلاق", order: 65, revelationOrder: 99, verses: 12, words: 240, letters: 1050, prefix: "  " },
+{ name: "الجاثية", order: 45, revelationOrder: 65, verses: 37, words: 488, letters: 2000, prefix: "حم" },
+{ name: "طه", order: 20, revelationOrder: 45, verses: 135, words: 2200, letters: 8750, prefix: "طه" },
+{ name: "الفلق", order: 113, revelationOrder: 20, verses: 5, words: 23, letters: 90, prefix: "  " },
+{ name: "التوبة", order: 9, revelationOrder: 113, verses: 129, words: 2500, letters: 10400, prefix: "" },
+{ name: "الليل", order: 92, revelationOrder: 9, verses: 21, words: 75, letters: 300, prefix: "" },
+{ name: "النساء", order: 4, revelationOrder: 92, verses: 176, words: 3760, letters: 15500, prefix: "  " },
+{ name: "المدثر", order: 74, revelationOrder: 4, verses: 56, words: 242, letters: 970, prefix: "  " },
+{ name: "المؤمنون", order: 23, revelationOrder: 74, verses: 118, words: 1850, letters: 7450, prefix: " " },
+{ name: "النجم", order: 53, revelationOrder: 23, verses: 62, words: 360, letters: 1500, prefix: "" },
+{ name: "يوسف", order: 12, revelationOrder: 53, verses: 111, words: 1800, letters: 7600, prefix: "الر" },
+{ name: "الشرح", order: 94, revelationOrder: 12, verses: 8, words: 27, letters: 100, prefix: " " },
+{ name: "الحديد", order: 57, revelationOrder: 94, verses: 29, words: 572, letters: 2400, prefix: " " },
+
+
+{ name: "لقمان", order: 31, revelationOrder: 57, verses: 34, words: 550, letters: 2200, prefix: "الر" },
+{ name: "القيامة", order: 75, revelationOrder: 31, verses: 40, words: 164, letters: 670, prefix: " " },
+{ name: "السجدة", order: 32, revelationOrder: 75, verses: 30, words: 374, letters: 1500, prefix: "" },
+{ name: "الهمزة", order: 104, revelationOrder: 32, verses: 9, words: 33, letters: 120, prefix: "" },
+{ name: "المنافقون", order: 63, revelationOrder: 104, verses: 11, words: 180, letters: 750, prefix: " " },
+{ name: "الزخرف", order: 43, revelationOrder: 63, verses: 89, words: 1150, letters: 4600, prefix: "حم" },
+{ name: "فاطر", order: 35, revelationOrder: 43, verses: 45, words: 822, letters: 3000, prefix: " " },
+{ name: "البلد", order: 90, revelationOrder: 35, verses: 20, words: 82, letters: 320, prefix: " " },
+{ name: "الأحزاب", order: 33, revelationOrder: 90, verses: 73, words: 1200, letters: 5000, prefix: " " },
+{ name: "المرسلات", order: 77, revelationOrder: 33, verses: 50, words: 180, letters: 800, prefix: "" },
+{ name: "الملك", order: 67, revelationOrder: 77, verses: 30, words: 300, letters: 1100, prefix: "" },
+{ name: "الذاريات", order: 51, revelationOrder: 67, verses: 60, words: 360, letters: 1400, prefix: "" },
+{ name: "يونس", order: 10, revelationOrder: 51, verses: 109, words: 1833, letters: 7425, prefix: "الر" },
+{ name: "الفجر", order: 89, revelationOrder: 10, verses: 30, words: 139, letters: 566, prefix: "" },
+ ],
+        // المجموعة الرابعة
+        [
+        { name: "الأعراف", order: 7, revelationOrder: 89, verses: 206, words: 3564, letters: 14600, prefix: "" },
+{ name: "التكوير", order: 81, revelationOrder: 7, verses: 29, words: 104, letters: 400, prefix: " " },
+{ name: "النازعات", order: 79, revelationOrder: 81, verses: 46, words: 168, letters: 640, prefix: "" },
+{ name: "المعارج", order: 70, revelationOrder: 79, verses: 44, words: 217, letters: 900, prefix: " " },
+{ name: "النحل", order: 16, revelationOrder: 70, verses: 128, words: 1850, letters: 7600, prefix: "  " },
+{ name: "التكاثر", order: 102, revelationOrder: 16, verses: 8, words: 28, letters: 105, prefix: "" },
+{ name: "النور", order: 24, revelationOrder: 102, verses: 64, words: 1000, letters: 4200, prefix: " " },
+{ name: "عبس", order: 80, revelationOrder: 24, verses: 42, words: 133, letters: 540, prefix: " " },
+{ name: "النبأ", order: 78, revelationOrder: 80, verses: 40, words: 176, letters: 700, prefix: " " },
+{ name: "الحاقة", order: 69, revelationOrder: 78, verses: 52, words: 261, letters: 1050, prefix: "" },
+{ name: "الكهف", order: 18, revelationOrder: 69, verses: 110, words: 1600, letters: 6400, prefix: " " },
+{ name: "الكافرون", order: 109, revelationOrder: 18, verses: 6, words: 27, letters: 90, prefix: "  " },
+{ name: "الصف", order: 61, revelationOrder: 109, verses: 14, words: 220, letters: 900, prefix: " " },
+{ name: "فصلت", order: 41, revelationOrder: 61, verses: 54, words: 772, letters: 3000, prefix: "حم" },
+{ name: "يس", order: 36, revelationOrder: 41, verses: 83, words: 735, letters: 3000, prefix: "يس" },
+{ name: "الطارق", order: 86, revelationOrder: 36, verses: 17, words: 61, letters: 250, prefix: "" },
+{ name: "المطففين", order: 83, revelationOrder: 86, verses: 36, words: 169, letters: 670, prefix: "" },
+{ name: "الانشقاق", order: 84, revelationOrder: 83, verses: 25, words: 108, letters: 500, prefix: " " },
+{ name: "الروم", order: 30, revelationOrder: 84, verses: 60, words: 828, letters: 3400, prefix: "الم" },
+{ name: "القارعة", order: 101, revelationOrder: 30, verses: 11, words: 36, letters: 160, prefix: "" },
+{ name: "الحشر", order: 59, revelationOrder: 101, verses: 24, words: 500, letters: 2000, prefix: " " },
+{ name: "الزمر", order: 39, revelationOrder: 59, verses: 75, words: 1200, letters: 4600, prefix: "" },
+   ],
+        // المجموعة الخامسة
+        [
+        { name: "الحجر", order: 15, revelationOrder: 39, verses: 99, words: 1400, letters: 5600, prefix: "الر" },
+{ name: "الكوثر", order: 108, revelationOrder: 15, verses: 3, words: 10, letters: 40, prefix: "" },
+{ name: "التغابن", order: 64, revelationOrder: 108, verses: 18, words: 242, letters: 1000, prefix: "" },
+
+{ name: "الدخان", order: 44, revelationOrder: 64, verses: 59, words: 346, letters: 1405, prefix: "حم" },
+{ name: "مريم", order: 19, revelationOrder: 44, verses: 98, words: 972, letters: 3830, prefix: "كهيعص" },
+{ name: "الفيل", order: 105, revelationOrder: 19, verses: 5, words: 23, letters: 90, prefix: " " },
+{ name: "المجادلة", order: 58, revelationOrder: 105, verses: 22, words: 475, letters: 2000, prefix: " " },
+{ name: "سبأ", order: 34, revelationOrder: 58, verses: 54, words: 890, letters: 3560, prefix: " " },
+{ name: "قال", order: 50, revelationOrder: 34, verses: 45, words: 373, letters: 1500, prefix: "ق" },
+{ name: "الإسراء", order: 17, revelationOrder: 50, verses: 111, words: 1550, letters: 6460, prefix: "" },
+{ name: "الماعون", order: 107, revelationOrder: 17, verses: 7, words: 25, letters: 110, prefix: "" },
+{ name: "التحريم", order: 66, revelationOrder: 107, verses: 12, words: 254, letters: 1050, prefix: "" },
+{ name: "الأحقاف", order: 46, revelationOrder: 66, verses: 35, words: 540, letters: 2300, prefix: "حم" },
+{ name: "الواقعة", order: 56, revelationOrder: 46, verses: 96, words: 379, letters: 1625, prefix: " " },
+{ name: "الصافات", order: 37, revelationOrder: 56, verses: 182, words: 1020, letters: 4125, prefix: "" },
+{ name: "القمر", order: 54, revelationOrder: 37, verses: 55, words: 342, letters: 1400, prefix: "" },
+    ],
+    
+        // المجموعة السادسة
+        [
+        {
+        "name": "ص",
+       
+        "order": 38,
+        "revelationOrder": 37,
+        "verses": 88,
+        "words": 564,
+        "letters": 2405,
+       
+    }
+      
+            ],
+         // المجموعة السابعة
+      [
+         { name: "نوح", order: 71, revelationOrder: 38, verses: 28, words: 227, letters: 990, prefix: " " }
+         ],
+         // المجموعة الثامنة
+         
+         [
+    { 
+      name: "الإنفطار",
+      order: 82,
+      revelationOrder: 82,
+      verses: 19,
+      words: 114,
+      letters: 493,
+      prefix: ""
+    }
+  ]
+];
+
+      React.useEffect(() => {
+        const typePlaceholder = () => {
+          if (placeholder.length < fullPlaceholder.length) {
+            setPlaceholder(fullPlaceholder.slice(0, placeholder.length + 1));
+          } else {
+            setTimeout(() => setPlaceholder(''), 2000);
+          }
+        };
+
+        timeoutRef.current = setTimeout(typePlaceholder, 200);
+        return () => clearTimeout(timeoutRef.current);
+      }, [placeholder]);
+
+
+const filteredSurahs = React.useMemo(() => {
+    if (!searchTerm) return [];
+
+    // البحث عن السورة في جميع المجموعات
+    const foundSurahIndex = surahGroups.findIndex(group =>
+        group.some(surah => 
+            surah.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+            surah.order.toString() === searchTerm
+        )
+    );
+
+    if (foundSurahIndex === -1) return [];
+
+    const matchedGroup = surahGroups[foundSurahIndex];
+    const foundSurahIndexInGroup = matchedGroup.findIndex(surah => 
+        surah.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        surah.order.toString() === searchTerm
+    );
+
+    // حساب المؤشرات للسور المجاورة مع التأكد من عدم تجاوز حدود المجموعة
+    const prevIndex = (foundSurahIndexInGroup - 1 + matchedGroup.length) % matchedGroup.length;
+    const nextIndex = (foundSurahIndexInGroup + 1) % matchedGroup.length;
+
+    // إذا كانت المجموعة تحتوي على عنصر واحد فقط، نعيد هذا العنصر فقط
+    if (matchedGroup.length === 1) {
+        return [matchedGroup[0]];
+    }
+
+    // إذا كانت السورة المطلوبة هي "ص"، نتأكد من إضافتها إلى النتائج
+    if (searchTerm.toLowerCase() === "ص") {
+        // نبحث عن السورة "ص" في المجموعة ونضيفها إذا وجدت
+        const surahSaadIndex = matchedGroup.findIndex(surah => surah.name.toLowerCase() === "ص");
+        if (surahSaadIndex !== -1) {
+            return [matchedGroup[surahSaadIndex]];
+        }
+    }
+   
+    // إضافة سجل للبحث (يمكنك تعديل هذا الجزء حسب احتياجاتك)
+    console.log('Searched for:', searchTerm);
+    console.log('Found in group:', foundSurahIndex);
+    console.log('Indices:', prevIndex, foundSurahIndexInGroup, nextIndex);
+
+    return [
+        matchedGroup[prevIndex],
+        matchedGroup[foundSurahIndexInGroup],
+        matchedGroup[nextIndex]
+    ];
+}, [searchTerm, surahGroups]);
+
+      const SearchIcon = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+        </svg>
+      );
+
+      const ThemeIcon = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {isDark ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          )}
+        </svg>
+      );
+
+      return (
+        <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-white' : 'bg-gray-50'} transition-all duration-300`}>
+          <div className="max-w-7xl mx-auto p-4">
+            {/* Header Card */}
+            <div className={`rounded-lg shadow-lg mb-6 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+              <div className="bg-emerald-600 p-6 rounded-t-lg flex justify-between items-center">
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="p-2 rounded-full hover:bg-emerald-500 transition-colors"
+                >
+                  <ThemeIcon />
+                </button>
+                
+                <div className="w-10"></div>
+              </div>
+              
+              <div className="text-center">
+                <h2 className="text-xl font-bold mt-4 text-emerald-600">الفرقان : النسبية & السبع المثاني</h2>
+              </div>
+              
+              <div className="p-6">
+                <div className="relative">
+                  <input
+                    type="text"
+                    className={`w-full rounded-lg border py-3 px-12 text-lg input-animation ${
+                      isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                    }`}
+                    placeholder={placeholder}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <div className="absolute right-4 top-4 text-gray-400">
+                    <SearchIcon />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Results Table */}
+            {filteredSurahs.length > 0 && (
+              <div className={`rounded-lg shadow-lg overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className="overflow-x-auto">
+                  <table  className="w-full border-collapse">
+                    <thead>
+                      <tr className={`${isDark ? 'bg-gray-700' : 'bg-emerald-50'}`}>
+                        <th className="p-4 text-right border border-gray-300">اسم السورة</th>
+                        <th className="p-4 text-right border border-gray-300">الترتيب</th>
+                        <th className="p-4 text-right border border-gray-300">ترتيب النزول</th>
+                        <th className="p-4 text-right border border-gray-300">الفواتح</th>
+                        <th className="p-4 text-right border border-gray-300">الآيات</th>
+                        <th className="p-4 text-right border border-gray-300">الكلمات</th>
+                        <th className="p-4 text-right border border-gray-300">الحروف</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredSurahs.map((surah) => (
+                        <tr
+                          key={surah.order}
+                          className={`
+                            ${isDark ? 'hover:bg-gray-700' : 'hover:bg-emerald-50'}
+                            transition-colors
+                          `}
+                        >
+                          <td className="p-4 font-bold text-emerald-600 border border-gray-300">{surah.name}</td>
+                          <td className="p-4 border border-gray-300">{surah.order}</td>
+                          <td className="p-4 border border-gray-300">{surah.revelationOrder}</td>
+                          <td className="p-4 border border-gray-300">{surah.prefix || '-'}</td>
+                          <td className="p-4 border border-gray-300">{surah.verses}</td>
+                          <td className="p-4 border border-gray-300">{surah.words.toLocaleString()}</td>
+                          <td className="p-4 border border-gray-300">{surah.letters.toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .input-animation::placeholder {
+    animation: blink 1s step-start infinite;
+  }
+
+  tr:hover {
+    transition: all 0.3s ease;
+    transform: translateY(-2px);
+  }
