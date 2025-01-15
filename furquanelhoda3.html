@@ -798,7 +798,6 @@ img {
         setTimeout(() => {
             const copyButton = document.getElementById(buttonId);
             copyButton.addEventListener('click', () => {
-                navigator.clipboard.writeText(totalAnalysis)
 			// Strip HTML tags from totalAnalysis
 const strippedText = totalAnalysis.replace(/<[^>]*>/g, '').trim();
 navigator.clipboard.writeText(strippedText)
