@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسومات بيانية(عليون) للنسب القرآنية م 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --sidebar-width: 300px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Cairo', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100%);
+            z-index: 1000;
+            padding: 30px 20px;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-toggle i {
+            font-size: 24px;
+        }
+
+        /* Checkbox Container Styles */
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-wrapper .custom-checkbox {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .custom-checkbox {
+            background-color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .checkbox-wrapper .custom-checkbox::after {
+            content: '✓';
+            position: absolute;
+            color: var(--primary-color);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .custom-checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checkbox-label {
+            color: white;
+            font-size: 1rem;
+            flex-grow: 1;
+            user-select: none;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            transition: all 0.4s ease;
+            margin-right: 60px; /* To avoid overlapping with toggle */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateY(100%);
+            }
+
+            .sidebar.active {
+                transform: translateY(0);
+            }
+        }
+        
+        /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+            direction: rtl;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+    
+    <!--  svg home -->
+   
+    <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ri-menu-line"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="checkbox-container">
+            <h1>النسب</h1>
+            <!-- Checkbox Wrappers -->
+            <div class="checkbox-wrapper">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkbox11" onchange="toggleDataset(0)">
+                    <label for="checkbox11" class="custom-checkbox"></label>
+                    <span class="checkbox-label">نسب مجموع حروف نورانية  </span>
+                </div>
+                <input type="checkbox" id="checkbox1" onchange="toggleDataset(0)">
+                <label for="checkbox1" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف نورانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox2" onchange="toggleDataset(1)">
+                <label for="checkbox2" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع الحروف الظلمانية</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox3" onchange="toggleDataset(2)">
+                <label for="checkbox3" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع الحروف الظلمانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox4" onchange="toggleDataset(3)">
+                <label for="checkbox4" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف المفتاح</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox5" onchange="toggleDataset(4)">
+                <label for="checkbox5" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف مفتاحها × قوتها</span>
+            </div>
+        </div>
+        <h1>التراكم</h1>
+        
+            <!-- Checkbox Wrappers -->
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox12" onchange="toggleDataset(0)">
+                <label for="checkbox12" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف نورانية  </span>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox6" onchange="toggleDataset(0)">
+                <label for="checkbox6" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف نورانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox7" onchange="toggleDataset(1)">
+                <label for="checkbox7" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع الحروف الظلمانية</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox8" onchange="toggleDataset(2)">
+                <label for="checkbox8" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع الحروف الظلمانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox9" onchange="toggleDataset(3)">
+                <label for="checkbox9" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف المفتاح</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox10" onchange="toggleDataset(4)">
+                <label for="checkbox10" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف مفتاحها × قوتها</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="chart-container">
+        <h1 dir="rtl" style="text-align:center"><span style="font-size:22px"><span style="background-color:#f1c40f; padding: 3px">&nbsp;<span style="color:#000000"> المجموعة الأولى ( 1 )&nbsp; :&nbsp; &nbsp;&nbsp;&nbsp;ألمر</span>&nbsp;&nbsp;</span></span></h1>
+        <canvas id="percentagesChart"></canvas>
+    </div>
+
+    <script>
+        
+          // svg home
+        const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = 'https://furquanelhoda.github.io/the_key_to_the_future/';
+            }, 100);
+        });
+          // End svg home
+        // Chart Configuration
+        const ctx = document.getElementById('percentagesChart').getContext('2d');
+
+        const labels = [ 'العلق	الفاتحة',
+'الفاتحة	المائدة',
+'العصر	الرعد',
+'الإخلاص	الحج',
+'الرعد	العلق',
+'الحج	العصر',
+'المائدة	الإخلاص'
+     ];
+
+        const data = {
+            labels: labels,
+            datasets: [
+            {
+                    label: 'نسب مجموع حروف نورانية  ',
+                    data: [0.011344282, 0.285158151, 0.082877129, 0.124361314, 0.088290754, 0.124908759, 0.283059611],
+                    borderColor: '#faf6b',
+                    backgroundColor: 'rgba(255, 127, 201, 0.43)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+
+         
+                
+                {
+                    label: 'نسب مجموع حروف نورانية × قوتها',
+                    data: [0.011318828, 0.286530879, 0.083628833, 0.122269581, 0.088809537, 0.122829849, 0.284612493],
+                    borderColor: '#ff6b6b',
+                    backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع الحروف الظلمانية',
+                    data: [0.01297782, 0.275680352, 0.086754759, 0.127811861, 0.094226837, 0.128205128, 0.274343244],
+                    borderColor: '#4ecdc4',
+                    backgroundColor: 'rgba(78, 205, 196, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع الحروف الظلمانية × قوتها',
+                    data: [0.01297782, 0.275680352, 0.086754759, 0.127811861, 0.094226837, 0.128205128, 0.274343244],
+                    borderColor: '#ffe66d',
+                    backgroundColor: 'rgba(255, 230, 109, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع حروف المفتاح',
+                    data: [0.011612164, 0.284940637, 0.084721933, 0.122422412, 0.090189544, 0.123099354, 0.283013955],
+                    borderColor: '#a8e6cf',
+                    backgroundColor: 'rgba(168, 230, 207, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع حروف مفتاحها × قوتها',
+                    data: [0.011272911, 0.286821552, 0.083774905, 0.121790873, 0.089034281, 0.12234366, 0.284961818],
+                    borderColor: '#dcedc1',
+                    backgroundColor: 'rgba(220, 237, 193, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+
+                // tqrqku;
+                {
+    label: 'تراكم مجموع حروف نورانية  ',
+    data: [0.00324128, 0.084716453, 0.108396044, 0.143928466, 0.169154834, 0.204843671, 0.285719251],
+    borderColor: '#FFEE33',
+    backgroundColor: 'rgba(255, 88, 11, 0.35)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+                
+{
+    label: 'تراكم مجموع حروف نورانية × قوتها',
+    data: [0.00323179, 0.08504305, 0.108921036, 0.143831858, 0.169189056, 0.204259847, 0.285523364],
+
+    borderColor: '#FF5733',
+    backgroundColor: 'rgba(255, 87, 51, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع الحروف الظلمانية',
+    data: [0.003704369, 0.082394145, 0.10715729, 0.143639711, 0.170535674, 0.207130349, 0.285438463],
+    borderColor: '#33FF57',
+    backgroundColor: 'rgba(51, 255, 87, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع الحروف الظلمانية × قوتها',
+    data: [0.003704369, 0.082394145, 0.10715729, 0.143639711, 0.170535674, 0.207130349, 0.285438463],
+    borderColor: '#3357FF',
+    backgroundColor: 'rgba(51, 87, 255, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع حروف المفتاح',
+    data: [0.003313965, 0.084632417, 0.108810985, 0.143748793, 0.169487747, 0.204618745, 0.285387347],
+    borderColor: '#FF33F5',
+    backgroundColor: 'rgba(255, 51, 245, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع حروف مفتاحها × قوتها',
+    data: [0.003218414, 0.085105903, 0.10902362, 0.143794887, 0.169214155, 0.204143243, 0.285499778],
+    borderColor: '#33FFF5',
+    backgroundColor: 'rgba(51, 255, 245, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+}
+            ]
+        };
+
+        const config = {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'nearest',
+            intersect: false,
+        },
+        plugins: {
+            tooltip: {
+                enabled: true,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                callbacks: {
+                    label: function(context) {
+                        let value = context.raw;
+                        return value + '%'; // إضافة رمز النسبة المئوية
+                    }
+                }
+            },
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white',
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45,
+                    
+                },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+                ticks: {
+                    color: 'white',
+                  
+                    callback: function(value) {
+                        return value + '%'; // إضافة رمز النسبة المئوية لمحور Y
+                    }
+                },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+        },
+        animation: {
+            duration: 800,
+            easing: 'easeOutQuart'
+        }
+    }
+};
+
+        const chart = new Chart(ctx, config);
+
+        // Toggle Dataset Function
+        function toggleDataset(datasetIndex) {
+            const dataset = chart.data.datasets[datasetIndex];
+            const checkbox = document.querySelectorAll('input[type="checkbox"]')[datasetIndex];
+            
+            dataset.hidden = !checkbox.checked;
+            chart.update();
+        }
+
+        // Sidebar Toggle Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

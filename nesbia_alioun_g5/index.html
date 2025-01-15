@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسومات بيانية(عليون)    للنسب القرآنية م 5</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --sidebar-width: 300px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Cairo', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100%);
+            z-index: 1000;
+            padding: 30px 20px;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-toggle i {
+            font-size: 24px;
+        }
+
+        /* Checkbox Container Styles */
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-wrapper .custom-checkbox {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .custom-checkbox {
+            background-color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .checkbox-wrapper .custom-checkbox::after {
+            content: '✓';
+            position: absolute;
+            color: var(--primary-color);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .custom-checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checkbox-label {
+            color: white;
+            font-size: 1rem;
+            flex-grow: 1;
+            user-select: none;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            transition: all 0.4s ease;
+            margin-right: 60px; /* To avoid overlapping with toggle */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateY(100%);
+            }
+
+            .sidebar.active {
+                transform: translateY(0);
+            }
+        }
+            /* svg home */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 7px;
+            direction: rtl;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .home-button:hover::before {
+            left: 100%;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            padding: 15px 35px;
+        }
+
+        .home-icon {
+            margin-right: 12px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .button-text {
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .home-button {
+                padding: 12px 25px;
+            }
+            
+            .home-button:hover {
+                padding: 12px 30px;
+            }
+            
+            .button-text {
+                font-size: 14px;
+            }
+        }
+        /* End svg home */
+    </style>
+</head>
+<body>
+    
+ 
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="ri-menu-line"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="checkbox-container">
+            <h1>النسب</h1>
+            <!-- Checkbox Wrappers -->
+            <div class="checkbox-wrapper">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkbox11" onchange="toggleDataset(0)">
+                    <label for="checkbox11" class="custom-checkbox"></label>
+                    <span class="checkbox-label">نسب مجموع حروف نورانية  </span>
+                </div>
+                <input type="checkbox" id="checkbox1" onchange="toggleDataset(0)">
+                <label for="checkbox1" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف نورانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox2" onchange="toggleDataset(1)">
+                <label for="checkbox2" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع الحروف الظلمانية</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox3" onchange="toggleDataset(2)">
+                <label for="checkbox3" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع الحروف الظلمانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox4" onchange="toggleDataset(3)">
+                <label for="checkbox4" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف المفتاح</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox5" onchange="toggleDataset(4)">
+                <label for="checkbox5" class="custom-checkbox"></label>
+                <span class="checkbox-label">نسب مجموع حروف مفتاحها × قوتها</span>
+            </div>
+        </div>
+        <h1>التراكم</h1>
+        
+            <!-- Checkbox Wrappers -->
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox12" onchange="toggleDataset(0)">
+                <label for="checkbox12" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف نورانية  </span>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox6" onchange="toggleDataset(0)">
+                <label for="checkbox6" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف نورانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox7" onchange="toggleDataset(1)">
+                <label for="checkbox7" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع الحروف الظلمانية</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox8" onchange="toggleDataset(2)">
+                <label for="checkbox8" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع الحروف الظلمانية × قوتها</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox9" onchange="toggleDataset(3)">
+                <label for="checkbox9" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف المفتاح</span>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox10" onchange="toggleDataset(4)">
+                <label for="checkbox10" class="custom-checkbox"></label>
+                <span class="checkbox-label">تراكم مجموع حروف مفتاحها × قوتها</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="chart-container">
+        <h1 dir="rtl" style="text-align:center"><span style="font-size:22px"><span style="background-color:#f1c40f; padding: 3px">&nbsp;<span style="color:#000000"> المجموعة الخامسة ( 5 )&nbsp; :&nbsp; &nbsp;&nbsp;&nbsp;  ألر حم كهيعص ق حم</span>&nbsp;&nbsp;</span></span></h1>
+
+        <canvas id="percentagesChart"></canvas>
+    </div>
+       <!--  svg home -->
+   
+    <a href="./index.html" class="home-button">
+        <svg class="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="button-text">Home</span>
+    </a>
+    <!-- End svg home -->
+
+    <script>
+        
+          // svg home
+        const homeButton = document.querySelector('.home-button');
+        
+        homeButton.addEventListener('mouseenter', () => {
+            homeButton.style.animation = 'pulse 1s infinite';
+        });
+
+        homeButton.addEventListener('mouseleave', () => {
+            homeButton.style.animation = 'none';
+            void homeButton.offsetWidth;
+        });
+
+        homeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            
+            // إضافة توجيه بعد انتهاء التأثير البصري
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                window.location.href = 'https://furquanelhoda.github.io/the_key_to_the_future/';
+            }, 100);
+        });
+          // End svg home
+        // Chart Configuration
+        const ctx = document.getElementById('percentagesChart').getContext('2d');
+
+        const labels = [ 'الكوثر	الحجر',
+'الماعون	الإسراء',
+'الفيل	مريم',
+'ق	سبأ',
+'القمر	الصافات',
+'مريم	الدخان',
+'الواقعة	الأحقاف',
+'الإسراء	ق',
+'الحجر	القمر',
+'الصافات	الواقعة',
+'سبأ	المجادلة',
+'الدخان	التغابن',
+'الأحقاف	التحريم',
+'المجادلة	الفيل',
+'التحريم	الماعون',
+'التغابن	الكوثر'  ];
+
+        const data = {
+            labels: labels,
+            datasets: [
+            {
+                    label: 'نسب مجموع حروف نورانية  ',
+                    data: [0.044506662, 0.097451245, 0.05885306, 0.072948446, 0.078316277, 0.079165862, 0.064085731, 0.116412435, 0.06425951, 0.082834524, 0.08165669, 0.037825835, 0.055049237, 0.031531184, 0.01834331, 0.016759992],
+                    borderColor: '#faf6b',
+                    backgroundColor: 'rgba(255, 127, 201, 0.43)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+
+         
+                
+                {
+                    label: 'نسب مجموع حروف نورانية × قوتها',
+                    data: [0.044125198, 0.097807734, 0.057464299, 0.072938303, 0.076727005, 0.077571252, 0.065441853, 0.116290958, 0.062652369, 0.083289001, 0.083191855, 0.038493031, 0.05560233, 0.032553234, 0.018265801, 0.017585778],
+                    borderColor: '#ff6b6b',
+                    backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع الحروف الظلمانية',
+                    data: [0.042852496, 0.090095951, 0.057732965, 0.070702553, 0.096072532, 0.079565783, 0.067002765, 0.112904537, 0.067449992, 0.104895105, 0.070539925, 0.037973654, 0.045901773, 0.026101805, 0.014921125, 0.015287039],
+                    borderColor: '#4ecdc4',
+                    backgroundColor: 'rgba(78, 205, 196, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع الحروف الظلمانية × قوتها',
+                    data: [0.042852496, 0.090095951, 0.057732965, 0.070702553, 0.096072532, 0.079565783, 0.067002765, 0.112904537, 0.067449992, 0.104895105, 0.070539925, 0.037973654, 0.045901773, 0.026101805, 0.014921125, 0.015287039],
+                    borderColor: '#ffe66d',
+                    backgroundColor: 'rgba(255, 230, 109, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع حروف المفتاح',
+                    data: [0.043070991, 0.098049444, 0.059469267, 0.074211839, 0.076321161, 0.079315037, 0.063937401, 0.117350873, 0.062757995, 0.080063506, 0.083012021, 0.038194602, 0.056044455, 0.032138807, 0.018643683, 0.017418916],
+                    borderColor: '#a8e6cf',
+                    backgroundColor: 'rgba(168, 230, 207, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+                {
+                    label: 'نسب مجموع حروف مفتاحها × قوتها',
+                    data: [0.043858853, 0.097610608, 0.057561311, 0.073153022, 0.076358304, 0.077681497, 0.065624672, 0.116109046, 0.062264142, 0.083072198, 0.083471066, 0.038616236, 0.055901348, 0.032633203, 0.018400512, 0.017683981],
+                    borderColor: '#dcedc1',
+                    backgroundColor: 'rgba(220, 237, 193, 0.2)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    fill: true,
+                    hidden: true
+                },
+
+                // tqrqku;
+                {
+    label: 'تراكم مجموع حروف نورانية  ',
+    data: [0.00464261, 0.014808011, 0.020947133, 0.028556581, 0.036725963, 0.044983967, 0.051668923, 0.063812217, 0.070515299, 0.079155992, 0.087673821, 0.091619536, 0.09736187, 0.100650972, 0.102564412, 0.104312692],
+    borderColor: '#FFEE33',
+    backgroundColor: 'rgba(255, 88, 11, 0.35)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+                
+{
+    label: 'تراكم مجموع حروف نورانية × قوتها',
+    data: [0.004620001, 0.014860676, 0.020877309, 0.028514102, 0.03654758, 0.044669453, 0.051521353, 0.06369726, 0.070257095, 0.078977628, 0.087687989, 0.091718291, 0.097539971, 0.100948363, 0.102860831, 0.104702099],
+
+    borderColor: '#FF5733',
+    backgroundColor: 'rgba(255, 87, 51, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع الحروف الظلمانية',
+    data: [0.004430228, 0.013744636, 0.019713254, 0.02702271, 0.036954996, 0.045180761, 0.052107721, 0.063780153, 0.070753349, 0.08159774, 0.088890383, 0.092816221, 0.097561693, 0.100260181, 0.101802775, 0.103383198],
+    borderColor: '#33FF57',
+    backgroundColor: 'rgba(51, 255, 87, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع الحروف الظلمانية × قوتها',
+    data: [0.004430228, 0.013744636, 0.019713254, 0.02702271, 0.036954996, 0.045180761, 0.052107721, 0.063780153, 0.070753349, 0.08159774, 0.088890383, 0.092816221, 0.097561693, 0.100260181, 0.101802775, 0.103383198],
+    borderColor: '#3357FF',
+    backgroundColor: 'rgba(51, 87, 255, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع حروف المفتاح',
+    data: [0.004501611, 0.014749353, 0.020964848, 0.028721177, 0.036697965, 0.044987661, 0.051670147, 0.0639352, 0.070494419, 0.078862342, 0.087538432, 0.091530382, 0.097387928, 0.10074695, 0.102695514, 0.104516071],
+    borderColor: '#FF33F5',
+    backgroundColor: 'rgba(255, 51, 245, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+},
+{
+    label: 'تراكم مجموع حروف مفتاحها × قوتها',
+    data: [0.004595298, 0.01482242, 0.02085339, 0.028517976, 0.036518394, 0.04465745, 0.051533255, 0.063698546, 0.070222252, 0.078926117, 0.087671773, 0.091717778, 0.097574825, 0.100993959, 0.102921867, 0.104774701],
+    borderColor: '#33FFF5',
+    backgroundColor: 'rgba(51, 255, 245, 0.2)',
+    tension: 0.4,
+    borderWidth: 2,
+    fill: true,
+    hidden: true
+}
+            ]
+        };
+
+        const config = {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'nearest',
+            intersect: false,
+        },
+        plugins: {
+            tooltip: {
+                enabled: true,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                callbacks: {
+                    label: function(context) {
+                        let value = context.raw;
+                        return value + '%'; // إضافة رمز النسبة المئوية
+                    }
+                }
+            },
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white',
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45,
+                    
+                },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+                ticks: {
+                    color: 'white',
+                  
+                    callback: function(value) {
+                        return value + '%'; // إضافة رمز النسبة المئوية لمحور Y
+                    }
+                },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+        },
+        animation: {
+            duration: 800,
+            easing: 'easeOutQuart'
+        }
+    }
+};
+
+        const chart = new Chart(ctx, config);
+
+        // Toggle Dataset Function
+        function toggleDataset(datasetIndex) {
+            const dataset = chart.data.datasets[datasetIndex];
+            const checkbox = document.querySelectorAll('input[type="checkbox"]')[datasetIndex];
+            
+            dataset.hidden = !checkbox.checked;
+            chart.update();
+        }
+
+        // Sidebar Toggle Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
