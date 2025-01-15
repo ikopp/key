@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -537,13 +538,10 @@ img {
 		// Copy text functionality
         copyTextBtn.addEventListener('click', () => {
             const textToCopy = modalText.textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert("Text copied to clipboard!");
-            }).catch(err => {
+            navigator.clipboard.writeText(textToCopy).catch(err => {
                 alert("Failed to copy text: " + err);
             });
         });
-
         // Close the modal when clicking outside the modal content
         window.addEventListener('click', (event) => {
             if (event.target === modal) {
@@ -701,6 +699,16 @@ img {
                     const lineAnalysis = analyzeLine(line);
                     outputDiv.innerHTML += `<div class="output-line">فرقان: ${lineAnalysis}</div>`;
                     totalAnalysis += lineAnalysis + ' ';
+                    const buttonId = `copyTextBtn-${index}`;
+                    outputDiv.innerHTML += `<button class="btn copy-btn" id="${buttonId}">نسخ</button></div>`;
+                    // Attach event listener to the button
+        setTimeout(() => {
+            const copyButton = document.getElementById(buttonId);
+            copyButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(totalAnalysis)
+                    .catch(err => alert("Failed to copy text: " + err));
+            });
+        }, 0);
                 }
             });
 
