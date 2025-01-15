@@ -6,7 +6,9 @@ const os = require('os');
 const audioconcat = require('audioconcat');
 
 const app = express();
-app.use(bodyParser.json());
+// Increase the request size limit (adjust the limit based on your needs)
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.resolve('./')));
 
 app.post('/synthesize', async (req, res) => {
