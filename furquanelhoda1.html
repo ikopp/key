@@ -707,7 +707,7 @@ img {
             copyButton.addEventListener('click', () => {
 		    // Strip HTML tags from totalAnalysis
                 const strippedText = totalAnalysis.replace(/<[^>]*>/g, '').trim();
-                navigator.clipboard.writeText(totalAnalysis)
+                navigator.clipboard.writeText(strippedText)
                     .catch(err => alert("Failed to copy text: " + err));
             });
         }, 0);
