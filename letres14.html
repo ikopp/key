@@ -1214,9 +1214,9 @@ navigator.clipboard.writeText(strippedText)
             return counts;
         }
                 async function generateAudio(library) {
-            const arabicInput = document.getElementById('arabicInput').value;
+            const strippedText = document.getElementById('arabicInput').value;
 
-            if (!arabicInput) {
+            if (!strippedText) {
                 alert('Please enter Arabic text.');
                 return;
             }
@@ -1225,7 +1225,7 @@ navigator.clipboard.writeText(strippedText)
                 const response = await fetch('/synthesize', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ arabicInput, library })
+                    body: JSON.stringify({ strippedText, library })
                 });
 
                 const data = await response.json();
