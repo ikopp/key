@@ -12,9 +12,9 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.resolve('./')));
 
 app.post('/synthesize', async (req, res) => {
-    const { arabicInput, library } = req.body;
+    const { strippedText, library } = req.body;
 
-    if (!arabicInput || !library) {
+    if (!strippedText || !library) {
         return res.status(400).json({ error: 'Arabic input and library must be provided.' });
     }
 
@@ -24,7 +24,7 @@ app.post('/synthesize', async (req, res) => {
     const finalOutputPath = path.join(tempDir, outputFileName);
 
     try {
-        const sanitizedInput = arabicInput
+        const sanitizedInput = strippedText
             .trim()
             .split(/\s+/)
             .filter(word => word.trim() !== '');
