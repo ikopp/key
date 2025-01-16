@@ -694,6 +694,31 @@ img {
             }).join('');
         }
 
+        const highlightCharsd = {
+            'ا': '1', 'أ': '1', 'إ': '1', 'ئ': '1', 'ؤ': '1', 'ء': '1', 'ى': '1', 'آ': '1',
+            'ل': '1',
+            'م': '1',
+            'ر': '1',
+            'ح': '1',
+            'ك': '1',
+            'ه': '1', 
+            'ي': '1',
+            'ع': '1',
+            'ص': '1',
+            'ق': '1'
+        };
+        const highlightChars1d = ['ا', 'أ', 'إ', 'ئ','ؤ', 'ء', 'ى', 'آ', 'ل', 'م', 'ر', 'ح', 'ك', 'ه', 'ي', 'ع', 'ص', 'ق'];
+        function highlightTextd(text) {
+            return text.split('').map(char => {
+                if (char in highlightCharsd) {
+                    const number = highlightCharsd[char];
+                    const numberClass = parseInt(number) > 9 ? 'number large-number' : 'number';
+                    return `<span class="highlight">${char}<span class="${numberClass}">${number}</span></span>`;
+                }
+                return char;
+            }).join('');
+        }
+
         // script placeholder
         
         const runInput = document.querySelector('#inputText');
@@ -734,6 +759,11 @@ img {
                 highlightChars1.includes(char) ? `<span class="highlight">${char}</span>` : char
             ).join('');
         }
+        function highlightText1d(text) {
+            return text.split('').map(char => 
+                highlightChars1.includes(char) ? `<span class="highlight">${char}</span>` : char
+            ).join('');
+        }
 
         function analyzeText() {
             const inputText = document.getElementById('inputText').value;
@@ -742,9 +772,27 @@ img {
 
             const lines = inputText.split('\n');
             let totalAnalysis = '';
+            let totalAnalysisd = '';
             
             lines.forEach((line, index) => {
                 if (line.trim() !== '') {
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText1d(line)}</div>`;
+                    outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightTextd(line)}</div>`;
+                    const lineAnalysisd = analyzeLined(line);
+                    outputDiv.innerHTML += `<div class="output-line">فرقان: ${lineAnalysisd}</div>`;
+                    totalAnalysisd += lineAnalysisd + ' ';
+                    const buttonIdd = `copyTextBtnd-${index}`;
+                    outputDiv.innerHTML += `<button class="btn copy-btn" id="${buttonIdd}">نسخ</button></div>`;
+                    // Attach event listener to the button
+        setTimeout(() => {
+            const copyButtond = document.getElementById(buttonIdd);
+            copyButtond.addEventListener('click', () => {
+			// Strip HTML tags from totalAnalysisd
+const strippedTextd = totalAnalysisd.replace(/<[^>]*>/g, '').trim();
+navigator.clipboard.writeText(strippedTextd)
+                    .catch(err => alert("Failed to copy text: " + err));
+            });
+        }, 0);
                     outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText1(line)}</div>`;
                     outputDiv.innerHTML += `<div class="input-line">القرآن: ${highlightText(line)}</div>`;
                     const lineAnalysis = analyzeLine(line);
@@ -846,6 +894,41 @@ navigator.clipboard.writeText(strippedText)
     </table>
 
             </div>`;
+        }
+
+        function analyzeLined(line) {
+            const words = line.split(' ');
+            return words.map(analyzeWordd).join('<span class="comma"> </span>');
+        }
+
+        function analyzeWordd(word) {
+            let result = '';
+            for (let char of word) {
+                if (['ا', 'أ', 'ئ', 'ى', 'ء', 'ؤ', 'إ', 'آ'].includes(char)) {
+                    result += 'ألف ';
+                } else if (char === 'ل') {
+                    result += 'لام ';
+                } else if (char === 'م') {
+                    result += 'ميم ';
+                } else if (char === 'ر') {
+                    result += 'راء ';
+                } else if (char === 'ح') {
+                    result += 'حاء ';
+                } else if (char === 'ك') {
+                    result += 'كاف ';
+                } else if (char === 'ه')  {
+                    result += 'هاء ';
+                } else if (char === 'ي') {
+                    result += 'ياء ';
+                } else if (char === 'ع') {
+                    result += 'عين ';
+                } else if (char === 'ص') {
+                    result += 'صاد ';
+                } else if (char === 'ق') {
+                    result += 'قاف ';
+                }
+            }
+            return result.trim();
         }
 
         function analyzeLine(line) {
